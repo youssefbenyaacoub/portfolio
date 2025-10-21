@@ -58,14 +58,31 @@
     
     <!-- Stylesheets -->
     <style>
-        /* Critical CSS for instant render */
-        body{margin:0;font-family:system-ui,-apple-system,sans-serif;background:#0a0e27}
-        .hero{min-height:100vh;display:flex;align-items:center}
+        /* Critical CSS - Expanded for better FCP */
+        *{box-sizing:border-box;margin:0;padding:0}
+        body{margin:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,'Inter',sans-serif;background:#0a0e27;color:#fff;line-height:1.6}
+        .navbar{position:fixed;top:0;width:100%;z-index:1000;background:rgba(10,14,39,0.95);backdrop-filter:blur(10px);padding:1rem 0}
+        .hero{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:6rem 2rem 2rem}
+        .hero-content{max-width:800px;text-align:center}
+        .hero-name{font-size:3rem;font-weight:800;margin:1rem 0;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+        .btn{display:inline-block;padding:0.8rem 2rem;border-radius:8px;text-decoration:none;font-weight:600;transition:0.3s}
+        .btn-primary{background:#667eea;color:#fff}
     </style>
+    
+    <!-- Main CSS - Load with high priority -->
     <link rel="stylesheet" href="frontend-styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    
+    <!-- Fonts - Async load with fallback -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"></noscript>
+    
+    <!-- Font Awesome - Defer load -->
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
+    
+    <!-- AOS - Defer load (animations not critical) -->
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css"></noscript>
     
     <!-- Schema.org structured data -->
     <script type="application/ld+json">
@@ -766,8 +783,8 @@
         </div>
     </div>
 
-    <!-- Scripts -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
-    <script src="frontend-script.js"></script>
+    <!-- Scripts - Deferred for better performance -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js" defer></script>
+    <script src="frontend-script.js" defer></script>
 </body>
 </html>
