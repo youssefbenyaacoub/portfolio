@@ -451,6 +451,7 @@ body.light-theme .nav-link.active {
     min-height: 100vh;
     display: flex;
     align-items: center;
+    justify-content: center;
     padding: 120px 0 80px;
     position: relative;
     overflow: hidden;
@@ -515,6 +516,8 @@ body.light-theme .hero::before {
 
 .hero-content {
     width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
     background: var(--bg-card);
     backdrop-filter: blur(30px);
     border: 1px solid rgba(59, 130, 246, 0.2);
