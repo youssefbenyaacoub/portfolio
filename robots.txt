@@ -1,0 +1,20 @@
+# Robots.txt pour Youssef Ben Yaacoub - youssefbenyaacoub.dev
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://youssefbenyaacoub.dev/sitemap.xml
+
+# Bloquer les fichiers sensibles
+Disallow: /assets/private/
+Disallow: /*.json$
+
+# Permettre l'indexation des ressources importantes
+Allow: /assets/*.jpg
+Allow: /assets/*.png
+Allow: /assets/*.svg
+Allow: /*.css
+Allow: /*.js
+
+# Optimisation du crawl
+Crawl-delay: 1

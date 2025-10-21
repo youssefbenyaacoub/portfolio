@@ -1,0 +1,27 @@
+<svg width="512" height="512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#007bff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0056b3;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Fond sombre -->
+  <rect width="512" height="512" rx="80" fill="#0a0e27"/>
+  
+  <!-- Cercle gradient de fond -->
+  <circle cx="256" cy="256" r="200" fill="url(#grad1)" opacity="0.2"/>
+  
+  <!-- Lettre Y stylisée -->
+  <text x="256" y="330" font-family="Inter, Arial, sans-serif" font-size="280" font-weight="bold" 
+        fill="url(#grad1)" text-anchor="middle" dominant-baseline="middle">Y</text>
+  
+  <!-- Badge BIS -->
+  <rect x="170" y="390" width="172" height="50" rx="25" fill="url(#grad1)"/>
+  <text x="256" y="423" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="600" 
+        fill="#ffffff" text-anchor="middle">BIS</text>
+  
+  <!-- Effet de brillance -->
+  <circle cx="320" cy="150" r="30" fill="#ffffff" opacity="0.1"/>
+  <circle cx="340" cy="170" r="15" fill="#ffffff" opacity="0.15"/>
+</svg>

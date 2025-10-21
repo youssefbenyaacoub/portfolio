@@ -1,0 +1,79 @@
+<svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGrad3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4facfe;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#00f2fe;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="chartBg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f1f3f5;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="800" height="600" fill="url(#bgGrad3)"/>
+  
+  <!-- Dashboard Container -->
+  <rect x="100" y="60" width="600" height="480" rx="20" fill="url(#chartBg)" stroke="#e0e0e0" stroke-width="2"/>
+  
+  <!-- Header -->
+  <rect x="100" y="60" width="600" height="60" rx="20" fill="#4facfe" opacity="0.1"/>
+  <text x="130" y="95" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#4facfe">Analytics Dashboard</text>
+  
+  <!-- Stats Cards -->
+  <rect x="130" y="140" width="150" height="80" rx="10" fill="#fff" stroke="#4facfe" stroke-width="2"/>
+  <text x="150" y="165" font-family="Arial, sans-serif" font-size="12" fill="#666">Users</text>
+  <text x="150" y="200" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#4facfe">12.5K</text>
+  
+  <rect x="310" y="140" width="150" height="80" rx="10" fill="#fff" stroke="#00f2fe" stroke-width="2"/>
+  <text x="330" y="165" font-family="Arial, sans-serif" font-size="12" fill="#666">Revenue</text>
+  <text x="330" y="200" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#00f2fe">$45K</text>
+  
+  <rect x="490" y="140" width="150" height="80" rx="10" fill="#fff" stroke="#4facfe" stroke-width="2"/>
+  <text x="510" y="165" font-family="Arial, sans-serif" font-size="12" fill="#666">Conversion</text>
+  <text x="520" y="200" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#4facfe">3.2%</text>
+  
+  <!-- Chart Area -->
+  <rect x="130" y="250" width="510" height="260" rx="10" fill="#fff" stroke="#e0e0e0" stroke-width="1"/>
+  
+  <!-- Y-axis labels -->
+  <text x="145" y="280" font-family="Arial, sans-serif" font-size="10" fill="#999">100K</text>
+  <text x="145" y="330" font-family="Arial, sans-serif" font-size="10" fill="#999">75K</text>
+  <text x="145" y="380" font-family="Arial, sans-serif" font-size="10" fill="#999">50K</text>
+  <text x="145" y="430" font-family="Arial, sans-serif" font-size="10" fill="#999">25K</text>
+  <text x="145" y="480" font-family="Arial, sans-serif" font-size="10" fill="#999">0</text>
+  
+  <!-- Grid lines -->
+  <line x1="180" y1="275" x2="620" y2="275" stroke="#f0f0f0" stroke-width="1"/>
+  <line x1="180" y1="325" x2="620" y2="325" stroke="#f0f0f0" stroke-width="1"/>
+  <line x1="180" y1="375" x2="620" y2="375" stroke="#f0f0f0" stroke-width="1"/>
+  <line x1="180" y1="425" x2="620" y2="425" stroke="#f0f0f0" stroke-width="1"/>
+  
+  <!-- Bar Chart -->
+  <rect x="200" y="350" width="40" height="125" rx="5" fill="#4facfe" opacity="0.8"/>
+  <rect x="260" y="320" width="40" height="155" rx="5" fill="#4facfe" opacity="0.8"/>
+  <rect x="320" y="380" width="40" height="95" rx="5" fill="#00f2fe" opacity="0.8"/>
+  <rect x="380" y="300" width="40" height="175" rx="5" fill="#00f2fe" opacity="0.8"/>
+  <rect x="440" y="340" width="40" height="135" rx="5" fill="#4facfe" opacity="0.8"/>
+  <rect x="500" y="290" width="40" height="185" rx="5" fill="#4facfe" opacity="0.8"/>
+  <rect x="560" y="360" width="40" height="115" rx="5" fill="#00f2fe" opacity="0.8"/>
+  
+  <!-- X-axis labels -->
+  <text x="210" y="500" font-family="Arial, sans-serif" font-size="10" fill="#999">Mon</text>
+  <text x="270" y="500" font-family="Arial, sans-serif" font-size="10" fill="#999">Tue</text>
+  <text x="330" y="500" font-family="Arial, sans-serif" font-size="10" fill="#999">Wed</text>
+  <text x="390" y="500" font-family="Arial, sans-serif" font-size="10" fill="#999">Thu</text>
+  <text x="450" y="500" font-family="Arial, sans-serif" font-size="10" fill="#999">Fri</text>
+  <text x="510" y="500" font-family="Arial, sans-serif" font-size="10" fill="#999">Sat</text>
+  <text x="570" y="500" font-family="Arial, sans-serif" font-size="10" fill="#999">Sun</text>
+  
+  <!-- Legend -->
+  <rect x="480" y="265" width="15" height="15" rx="3" fill="#4facfe"/>
+  <text x="500" y="277" font-family="Arial, sans-serif" font-size="10" fill="#666">2024</text>
+  <rect x="555" y="265" width="15" height="15" rx="3" fill="#00f2fe"/>
+  <text x="575" y="277" font-family="Arial, sans-serif" font-size="10" fill="#666">2025</text>
+  
+  <!-- Icons -->
+  <circle cx="660" cy="90" r="15" fill="#fff"/>
+  <text x="653" y="97" font-family="Arial, sans-serif" font-size="16">📊</text>
+</svg>
