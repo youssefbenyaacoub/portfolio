@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -51,7 +51,17 @@
     <link rel="alternate" hreflang="en" href="https://youssefbenyaacoub.dev/?lang=en">
     <link rel="alternate" hreflang="x-default" href="https://youssefbenyaacoub.dev/">
     
+    <!-- Preconnect for faster loading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    
     <!-- Stylesheets -->
+    <style>
+        /* Critical CSS for instant render */
+        body{margin:0;font-family:system-ui,-apple-system,sans-serif;background:#0a0e27}
+        .hero{min-height:100vh;display:flex;align-items:center}
+    </style>
     <link rel="stylesheet" href="frontend-styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -95,7 +105,7 @@
 </head>
 <body>
     <!-- Navigation -->
-    <nav class="navbar" id="navbar">
+    <nav class="navbar" id="navbar" role="navigation" aria-label="Main navigation">
         <div class="nav-container">
             <div class="nav-logo">
                 <a href="#home">
@@ -135,10 +145,12 @@
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section id="home" class="hero">
-        <div class="hero-container">
-            <div class="hero-content" data-aos="fade-up">
+    <!-- Main Content -->
+    <main id="main-content" role="main">
+        <!-- Hero Section -->
+        <section id="home" class="hero">
+            <div class="hero-container">
+                <div class="hero-content" data-aos="fade-up">
                 <div class="status-badge">
                     <span class="status-dot"></span>
                     <span class="status-text" data-i18n="hero.status">Available for opportunities</span>
@@ -229,16 +241,16 @@
                 </div>
                 
                 <div class="hero-social">
-                    <a href="#" class="social-link" target="_blank" title="GitHub">
+                    <a href="https://github.com/youssefbenyaacoub" class="social-link" target="_blank" rel="noopener" aria-label="GitHub - Youssef Ben Yaacoub">
                         <i class="fab fa-github"></i>
                     </a>
-                    <a href="#" class="social-link" target="_blank">
+                    <a href="https://linkedin.com/in/youssefbenyaacoub" class="social-link" target="_blank" rel="noopener" aria-label="LinkedIn - Youssef Ben Yaacoub">
                         <i class="fab fa-linkedin"></i>
                     </a>
-                    <a href="#" class="social-link" target="_blank">
+                    <a href="https://twitter.com/youssefbenyaacoub" class="social-link" target="_blank" rel="noopener" aria-label="Twitter - Youssef Ben Yaacoub">
                         <i class="fab fa-twitter"></i>
                     </a>
-                    <a href="#" class="social-link" target="_blank">
+                    <a href="https://codepen.io/youssefbenyaacoub" class="social-link" target="_blank" rel="noopener" aria-label="CodePen - Youssef Ben Yaacoub">
                         <i class="fab fa-codepen"></i>
                     </a>
                 </div>
@@ -463,7 +475,7 @@
                 <!-- Project A: Business Inventory System -->
                 <div class="project-card" data-aos="fade-up" data-aos-delay="200" data-project="inventory">
                     <div class="project-image">
-                        <img src="assets/joker.png" alt="Inventory System screenshot" class="project-thumbnail">
+                        <img src="assets/projects/joker.svg" alt="Inventory System screenshot" class="project-thumbnail" loading="lazy" width="800" height="600">
                         <div class="project-overlay">
                             <div class="project-actions">
                                 <button class="project-btn view-details-btn" data-project="inventory">
@@ -495,7 +507,7 @@
                 <!-- Project B: Client Invoicing Portal -->
                 <div class="project-card" data-aos="fade-up" data-aos-delay="300" data-project="invoicing">
                     <div class="project-image">
-                        <img src="assets/projects/invoicing.png" alt="Invoicing Portal screenshot" class="project-thumbnail">
+                        <img src="assets/projects/invoicing.svg" alt="Invoicing Portal screenshot" class="project-thumbnail" loading="lazy" width="800" height="600">
                         <div class="project-overlay">
                             <div class="project-actions">
                                 <button class="project-btn view-details-btn" data-project="invoicing">
@@ -527,7 +539,7 @@
                 <!-- Project C: Sales Analytics Dashboard -->
                 <div class="project-card" data-aos="fade-up" data-aos-delay="400" data-project="analytics">
                     <div class="project-image">
-                        <img src="assets/projects/analytics.png" alt="Sales Dashboard screenshot" class="project-thumbnail">
+                        <img src="assets/projects/analytics.svg" alt="Sales Dashboard screenshot" class="project-thumbnail" loading="lazy" width="800" height="600">
                         <div class="project-overlay">
                             <div class="project-actions">
                                 <button class="project-btn view-details-btn" data-project="analytics">
@@ -673,9 +685,10 @@
             </div>
         </div>
     </section>
+    </main>
 
     <!-- Footer -->
-    <footer class="footer">
+    <footer class="footer" role="contentinfo">
         <div class="container">
             <div class="footer-content">
                 <div class="footer-social">
