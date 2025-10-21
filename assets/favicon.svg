@@ -6,32 +6,31 @@
       <stop offset="50%" style="stop-color:#3b82f6;stop-opacity:1" />
       <stop offset="100%" style="stop-color:#60a5fa;stop-opacity:1" />
     </linearGradient>
-    <linearGradient id="textGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#dbeafe;stop-opacity:1" />
-    </linearGradient>
   </defs>
   
-  <!-- Rounded rectangle background -->
-  <rect width="512" height="512" rx="100" fill="url(#bgGradient)"/>
+  <!-- Circle background -->
+  <circle cx="256" cy="256" r="256" fill="url(#bgGradient)"/>
   
-  <!-- YB Letters centered -->
-  <g transform="translate(256, 280)">
-    <!-- Y letter -->
-    <path d="M -100 -140 L -50 -140 L 0 -30 L 50 -140 L 100 -140 L 25 0 L 25 140 L -25 140 L -25 0 Z" 
-          fill="url(#textGradient)" 
-          stroke="#ffffff" 
-          stroke-width="8"
-          stroke-linejoin="round"/>
+  <!-- YB monogram - Y and B overlapped -->
+  <g transform="translate(256, 256)">
+    <!-- Large Y in background -->
+    <text x="-90" y="100" 
+          font-family="'Inter', 'Arial Black', sans-serif" 
+          font-size="280" 
+          font-weight="900" 
+          fill="#ffffff" 
+          opacity="0.3">Y</text>
     
-    <!-- B letter -->
-    <path d="M 60 -140 L 140 -140 Q 200 -140 200 -80 Q 200 -40 170 -25 Q 205 -10 205 40 Q 205 140 135 140 L 60 140 Z M 110 -95 L 110 -45 L 135 -45 Q 155 -45 155 -70 Q 155 -95 135 -95 Z M 110 5 L 110 95 L 140 95 Q 160 95 160 50 Q 160 5 140 5 Z" 
-          fill="url(#textGradient)" 
-          stroke="#ffffff" 
-          stroke-width="8"
-          stroke-linejoin="round"/>
+    <!-- Large B in foreground, slightly offset -->
+    <text x="10" y="100" 
+          font-family="'Inter', 'Arial Black', sans-serif" 
+          font-size="280" 
+          font-weight="900" 
+          fill="#ffffff" 
+          stroke="#3b82f6" 
+          stroke-width="4">B</text>
   </g>
   
-  <!-- Subtle glow effect -->
-  <rect width="512" height="512" rx="100" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="3"/>
+  <!-- Subtle border -->
+  <circle cx="256" cy="256" r="250" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="4"/>
 </svg>
