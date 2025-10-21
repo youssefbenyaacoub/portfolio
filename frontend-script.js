@@ -889,7 +889,7 @@ const projectData = {
             { icon: 'fab fa-bootstrap', name: 'Bootstrap' },
             { icon: 'fas fa-server', name: 'Apache' }
         ],
-        video: 'assets/videos/inventory-demo.mp4',
+        youtubeId: 'NDiumteygb8', // YouTube video ID for demo
         liveLink: 'https://inventory-demo.example.com',
         githubLink: 'https://github.com/youssef-dev/inventory-system'
     },
@@ -965,9 +965,11 @@ function initProjectModal() {
         modal.classList.remove('active');
         document.body.style.overflow = '';
         
-        // Pause video if playing
-        const video = document.getElementById('modalVideo');
-        video.pause();
+        // Clear video container to stop playback (important for YouTube iframes)
+        const videoContainer = document.getElementById('modalVideoContainer');
+        if (videoContainer) {
+            videoContainer.innerHTML = '';
+        }
     }
     
     modalClose.addEventListener('click', closeModal);
@@ -989,10 +991,37 @@ function initProjectModal() {
         document.getElementById('modalStatus').innerHTML = `<i class="fas fa-check-circle"></i> ${project.status}`;
         document.getElementById('modalDescription').textContent = project.description;
         
-        // Set video
-        const video = document.getElementById('modalVideo');
-        video.src = project.video;
-        video.poster = `assets/projects/${projectId}.png`;
+        // Set video or YouTube iframe (LAZY LOADING)
+        const videoContainer = document.getElementById('modalVideoContainer');
+        if (project.youtubeId) {
+            // YouTube iframe with lazy loading
+            videoContainer.innerHTML = `
+                <iframe 
+                    width="100%" 
+                    height="400" 
+                    src="https://www.youtube.com/embed/${project.youtubeId}" 
+                    title="${project.title} Demo" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                    referrerpolicy="strict-origin-when-cross-origin" 
+                    allowfullscreen
+                    loading="lazy">
+                </iframe>
+            `;
+        } else if (project.video) {
+            // Local video with lazy loading
+            videoContainer.innerHTML = `
+                <video controls preload="none" poster="assets/projects/${projectId}.png" style="width: 100%;">
+                    <source src="${project.video}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            `;
+        } else {
+            // Fallback image if no video
+            videoContainer.innerHTML = `
+                <img src="assets/projects/${projectId}.svg" alt="${project.title}" style="width: 100%; border-radius: 8px;">
+            `;
+        }
         
         // Populate features
         const featuresList = document.getElementById('modalFeatures');

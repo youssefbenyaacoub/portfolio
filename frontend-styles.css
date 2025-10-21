@@ -2865,11 +2865,20 @@ body.light-theme .modal-close {
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
-.modal-video video {
+.modal-video video,
+.modal-video iframe {
     width: 100%;
     height: auto;
     display: block;
     max-height: 400px;
+    min-height: 300px;
+    border: none;
+}
+
+.modal-video img {
+    width: 100%;
+    height: auto;
+    display: block;
 }
 
 .modal-description,
