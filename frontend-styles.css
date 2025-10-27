@@ -1093,19 +1093,21 @@ body.light-theme .hero-content {
 }
 
 .status-badge {
-    display: inline-flex;
+    display: flex;
     align-items: center;
-    gap: 0.8rem;
+    justify-content: center;
+    gap: 0.6rem;
     background: rgba(16, 185, 129, 0.12);
     border: 2px solid rgba(16, 185, 129, 0.35);
-    padding: 0.8rem 1.5rem;
+    padding: 0.6rem 1.2rem;
     border-radius: 999px;
-    margin-bottom: 2rem;
-    font-size: 1rem;
+    margin: 0 auto 0.8rem auto;
+    font-size: 0.85rem;
     color: rgb(16, 185, 129);
     font-weight: 700;
     animation: pulse 2s ease infinite;
     letter-spacing: 0.3px;
+    width: fit-content;
 }
 
 body.light-theme .status-badge {
@@ -1115,12 +1117,13 @@ body.light-theme .status-badge {
 }
 
 .status-dot {
-    width: 10px;
-    height: 10px;
+    width: 8px;
+    height: 8px;
     background: rgb(16, 185, 129);
     border-radius: 50%;
     animation: statusDotPulse 2s ease infinite;
     will-change: transform, opacity;
+    flex-shrink: 0;
 }
 
 body.light-theme .status-dot {
