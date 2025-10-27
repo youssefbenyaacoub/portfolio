@@ -1072,6 +1072,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // 2. Reveal sections and elements as they come into view
     const revealElements = () => {
         const elements = document.querySelectorAll('[data-aos], .scroll-item, section');
+        const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
+        const currentProgress = (window.scrollY / totalScroll) * 100;
         
         elements.forEach((element, index) => {
             const rect = element.getBoundingClientRect();
@@ -1088,7 +1090,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     element.classList.add('scroll-reveal');
                 }
                 
-                console.log(`✨ Revealed: ${element.tagName} at scroll position ${progress.toFixed(1)}%`);
+                console.log(`✨ Revealed: ${element.tagName} at scroll position ${currentProgress.toFixed(1)}%`);
             }
         });
     };
