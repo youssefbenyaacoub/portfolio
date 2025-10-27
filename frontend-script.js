@@ -1052,9 +1052,6 @@ if (document.readyState === 'loading') {
     initProjectModal();
 }
 
-// ===== HORIZONTAL SCROLLING INITIALIZED =====
-// Portfolio now uses horizontal scrolling (left-right)
-
 document.addEventListener('DOMContentLoaded', function () {
     console.log('✨ Horizontal scrolling initialized');
 
@@ -1148,131 +1145,91 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }, { passive: true });
     
-    // ===== CUSTOM EASING FUNCTIONS FOR SMOOTH SCROLLING =====
-    const easingFunctions = {
-        linear: (t) => t,
-        easeIn: (t) => t * t,
-        easeOut: (t) => 1 - (1 - t) * (1 - t),
-        easeInOut: (t) => t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t,
-        easeInCubic: (t) => t * t * t,
-        easeOutCubic: (t) => 1 - Math.pow(1 - t, 3),
-        easeInOutCubic: (t) => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2,
-        easeInQuart: (t) => t * t * t * t,
-        easeOutQuart: (t) => 1 - Math.pow(1 - t, 4),
-        easeInOutQuart: (t) => t < 0.5 ? 8 * t * t * t * t : 1 - Math.pow(-2 * t + 2, 4) / 2,
-        easeInQuint: (t) => t * t * t * t * t,
-        easeOutQuint: (t) => 1 - Math.pow(1 - t, 5),
-        easeInOutQuint: (t) => t < 0.5 ? 16 * t * t * t * t * t : 1 - Math.pow(-2 * t + 2, 5) / 2,
-        easeOutExpo: (t) => t === 1 ? 1 : 1 - Math.pow(2, -10 * t),
-        easeInExpo: (t) => t === 0 ? 0 : Math.pow(2, 10 * t - 10),
-        easeInOutExpo: (t) => t === 0 ? 0 : t === 1 ? 1 : t < 0.5 ? Math.pow(2, 20 * t - 10) / 2 : (2 - Math.pow(2, -20 * t + 10)) / 2,
-        easeOutElastic: (t) => {
-            const c5 = (2 * Math.PI) / 4.5;
-            return t === 0 ? 0 : t === 1 ? 1 : Math.pow(2, -10 * t) * Math.sin((t * 10 - 0.75) * c5) + 1;
-        },
-        easeOutBounce: (t) => {
-            const n1 = 7.5625, d1 = 2.75;
-            if (t < 1 / d1) return n1 * t * t;
-            if (t < 2 / d1) return n1 * (t -= 1.5 / d1) * t + 0.75;
-            if (t < 2.5 / d1) return n1 * (t -= 2.25 / d1) * t + 0.9375;
-            return n1 * (t -= 2.625 / d1) * t + 0.984375;
+// ===== VERTICAL SCROLLING INITIALIZED =====
+// Portfolio uses standard vertical scrolling (top-to-bottom)
+
+document.addEventListener('DOMContentLoaded', function () {
+    console.log('✨ Vertical scrolling initialized');
+
+    const navbar = document.querySelector('.navbar');
+    const hero = document.querySelector('.hero');
+    
+    // Header blur effect on vertical scroll
+    const updateHeaderEffect = () => {
+        if (!navbar) return;
+        
+        const scrolled = window.scrollY;
+        const blurAmount = Math.min(scrolled / 300, 1);
+        const bgOpacity = Math.min(0.95, 0.5 + blurAmount * 0.45);
+        
+        navbar.style.backdropFilter = `blur(${blurAmount * 15}px)`;
+        navbar.style.background = `rgba(10, 14, 39, ${bgOpacity})`;
+        
+        if (scrolled > 50) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
         }
     };
     
-    // Smooth scrolling with easing
-    let isScrolling = false;
-    const smoothScroll = (targetX, duration = 800, easing = 'easeOutCubic') => {
-        if (isScrolling) return;
-        isScrolling = true;
+    // Parallax hero effect (vertical)
+    const updateHeroParallax = () => {
+        if (!hero) return;
         
-        const startX = main.scrollLeft;
-        const distance = targetX - startX;
-        const startTime = performance.now();
-        const easeFn = easingFunctions[easing] || easingFunctions.easeOutCubic;
+        const scrolled = window.scrollY;
+        const parallaxAmount = scrolled * 0.4;
         
-        const animate = (currentTime) => {
-            const elapsed = currentTime - startTime;
-            const progress = Math.min(elapsed / duration, 1);
-            const easeProgress = easeFn(progress);
+        hero.style.transform = `translateY(${parallaxAmount}px)`;
+    };
+    
+    // Highlight text on scroll
+    const highlightOnScroll = () => {
+        const highlights = document.querySelectorAll('.highlight-on-scroll');
+        
+        highlights.forEach(element => {
+            const rect = element.getBoundingClientRect();
+            const isInView = rect.top < window.innerHeight * 0.7 && rect.bottom > 0;
             
-            main.scrollLeft = startX + distance * easeProgress;
-            
-            if (progress < 1) {
-                requestAnimationFrame(animate);
+            if (isInView) {
+                element.classList.add('highlighted');
             } else {
-                isScrolling = false;
-            }
-        };
-        
-        requestAnimationFrame(animate);
-    };
-    
-    // Mouse wheel scroll with easing acceleration
-    main.addEventListener('wheel', (e) => {
-        if (isScrolling) {
-            e.preventDefault();
-            return;
-        }
-        
-        e.preventDefault();
-        
-        // Calculate scroll amount based on delta magnitude (acceleration curve)
-        const deltaY = e.deltaY;
-        const deltaX = e.deltaX;
-        
-        // Use easeOut for natural deceleration feel
-        const scrollFactor = Math.min(Math.abs(deltaY) / 100, 1);
-        const easeMultiplier = easingFunctions.easeOut(scrollFactor);
-        const scrollAmount = 300 * easeMultiplier;
-        
-        // Detect if user is scrolling vertically or horizontally
-        if (Math.abs(deltaY) > Math.abs(deltaX)) {
-            // Vertical wheel = horizontal scroll with easing
-            const direction = deltaY > 0 ? 1 : -1;
-            smoothScroll(main.scrollLeft + direction * scrollAmount, 600, 'easeOutCubic');
-        } else if (Math.abs(deltaX) > 0) {
-            // Horizontal wheel = horizontal scroll with easing
-            const direction = deltaX > 0 ? 1 : -1;
-            smoothScroll(main.scrollLeft + direction * scrollAmount, 600, 'easeOutCubic');
-        }
-    }, { passive: false });
-    
-    // Keyboard arrow keys for horizontal navigation with easing
-    window.addEventListener('keydown', (e) => {
-        if (!main || isScrolling) return;
-        
-        const scrollDistance = window.innerWidth * 0.8;
-        
-        if (e.key === 'ArrowRight' || e.key === ' ') {
-            e.preventDefault();
-            smoothScroll(main.scrollLeft + scrollDistance, 700, 'easeOutQuart');
-        }
-        if (e.key === 'ArrowLeft') {
-            e.preventDefault();
-            smoothScroll(main.scrollLeft - scrollDistance, 700, 'easeOutQuart');
-        }
-    });
-    
-    // Click nav links for horizontal scroll with easing
-    document.querySelectorAll('a[href^="#"]').forEach(a => {
-        a.addEventListener('click', (e) => {
-            if (isScrolling) return;
-            
-            const href = a.getAttribute('href');
-            if (!href || href === '#') return;
-            e.preventDefault();
-            const target = document.querySelector(href);
-            if (target && main) {
-                const scrollLeft = target.offsetLeft - window.innerWidth / 2 + target.offsetWidth / 2;
-                smoothScroll(scrollLeft, 900, 'easeInOutCubic');
+                element.classList.remove('highlighted');
             }
         });
-    });
+    };
     
-    // Initial setup
+    // Section visibility tracking (vertical)
+    const updateSectionVisibility = () => {
+        document.querySelectorAll('section').forEach(section => {
+            const rect = section.getBoundingClientRect();
+            const percentInView = Math.min(100, Math.max(0, 
+                100 - (Math.abs(rect.top) / window.innerHeight) * 100
+            ));
+            
+            section.setAttribute('data-visibility', percentInView.toFixed(0));
+        });
+    };
+    
+    // Scroll progress tracker (vertical)
+    const updateScrollProgress = () => {
+        const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = (window.scrollY / totalScroll) * 100;
+        document.documentElement.style.setProperty('--scroll-progress', progress + '%');
+    };
+    
+    // Main scroll listener - detect vertical scroll
+    window.addEventListener('scroll', () => {
+        updateHeaderEffect();
+        updateHeroParallax();
+        highlightOnScroll();
+        updateSectionVisibility();
+        updateScrollProgress();
+    }, { passive: true });
+    
+    // Initial call
     updateHeaderEffect();
     highlightOnScroll();
     updateSectionVisibility();
     
-    console.log('✅ Horizontal scrolling ready — use arrow keys or scroll horizontally');
+    console.log('✅ Vertical scrolling ready');
 });
