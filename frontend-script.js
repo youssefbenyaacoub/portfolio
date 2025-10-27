@@ -1052,20 +1052,21 @@ if (document.readyState === 'loading') {
     initProjectModal();
 }
 
-// ===== LENIS CODE REMOVED - STANDARD SCROLL RESTORED =====
-// Removed fullpage scroll manager - using native browser scrolling instead
+// ===== HORIZONTAL SCROLLING INITIALIZED =====
+// Portfolio now uses horizontal scrolling (left-right)
 
-// Native scroll event listeners for enhancements only
 document.addEventListener('DOMContentLoaded', function () {
-    console.log('✨ Standard scrolling initialized');
+    console.log('✨ Horizontal scrolling initialized');
 
-    // Header blur effect on scroll
+    const main = document.querySelector('main');
     const navbar = document.querySelector('.navbar');
+    const hero = document.querySelector('.hero');
     
+    // Header blur effect on horizontal scroll
     const updateHeaderEffect = () => {
-        if (!navbar) return;
+        if (!navbar || !main) return;
         
-        const scrolled = window.scrollY;
+        const scrolled = main.scrollLeft;
         const blurAmount = Math.min(scrolled / 300, 1);
         const bgOpacity = Math.min(0.95, 0.5 + blurAmount * 0.45);
         
@@ -1079,15 +1080,14 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     };
     
-    // Parallax hero effect
-    const hero = document.querySelector('.hero');
+    // Parallax hero effect (horizontal)
     const updateHeroParallax = () => {
-        if (!hero) return;
+        if (!hero || !main) return;
         
-        const scrolled = window.scrollY;
+        const scrolled = main.scrollLeft;
         const parallaxAmount = scrolled * 0.4;
         
-        hero.style.transform = `translateY(${parallaxAmount}px)`;
+        hero.style.transform = `translateX(${parallaxAmount * -0.3}px)`;
     };
     
     // Highlight text on scroll
@@ -1096,7 +1096,7 @@ document.addEventListener('DOMContentLoaded', function () {
         
         highlights.forEach(element => {
             const rect = element.getBoundingClientRect();
-            const isInView = rect.top < window.innerHeight * 0.7 && rect.bottom > 0;
+            const isInView = rect.left < window.innerWidth * 0.7 && rect.right > 0;
             
             if (isInView) {
                 element.classList.add('highlighted');
@@ -1106,38 +1106,81 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     };
     
-    // Section visibility tracking
+    // Section visibility tracking (horizontal)
     const updateSectionVisibility = () => {
         document.querySelectorAll('section').forEach(section => {
             const rect = section.getBoundingClientRect();
             const percentInView = Math.min(100, Math.max(0, 
-                100 - (Math.abs(rect.top) / window.innerHeight) * 100
+                100 - (Math.abs(rect.left) / window.innerWidth) * 100
             ));
             
             section.setAttribute('data-visibility', percentInView.toFixed(0));
         });
     };
     
-    // Scroll progress tracker
+    // Scroll progress tracker (horizontal)
     const updateScrollProgress = () => {
-        const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
-        const progress = (window.scrollY / totalScroll) * 100;
+        if (!main) return;
+        const totalScroll = main.scrollWidth - window.innerWidth;
+        const progress = (main.scrollLeft / totalScroll) * 100;
         document.documentElement.style.setProperty('--scroll-progress', progress + '%');
     };
     
-    // Main scroll listener
-    window.addEventListener('scroll', () => {
+    // Main scroll listener - detect horizontal scroll
+    main.addEventListener('scroll', () => {
         updateHeaderEffect();
         updateHeroParallax();
         highlightOnScroll();
         updateSectionVisibility();
         updateScrollProgress();
+        
+        // Update active nav link based on horizontal scroll
+        const sections = document.querySelectorAll('section[id]');
+        sections.forEach(section => {
+            const rect = section.getBoundingClientRect();
+            const isActive = rect.left > -100 && rect.left < window.innerWidth - 100;
+            
+            document.querySelectorAll('.nav-link').forEach(link => {
+                if (link.getAttribute('href') === '#' + section.id) {
+                    link.classList.toggle('active', isActive);
+                }
+            });
+        });
     }, { passive: true });
     
-    // Initial call
+    // Keyboard arrow keys for horizontal navigation
+    window.addEventListener('keydown', (e) => {
+        if (!main) return;
+        const scrollAmount = window.innerWidth * 0.8;
+        
+        if (e.key === 'ArrowRight' || e.key === ' ') {
+            e.preventDefault();
+            main.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+        }
+        if (e.key === 'ArrowLeft') {
+            e.preventDefault();
+            main.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+        }
+    });
+    
+    // Click nav links for horizontal scroll
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+        a.addEventListener('click', (e) => {
+            const href = a.getAttribute('href');
+            if (!href || href === '#') return;
+            e.preventDefault();
+            const target = document.querySelector(href);
+            if (target && main) {
+                const scrollLeft = target.offsetLeft - window.innerWidth / 2 + target.offsetWidth / 2;
+                main.scrollTo({ left: scrollLeft, behavior: 'smooth' });
+            }
+        });
+    });
+    
+    // Initial setup
     updateHeaderEffect();
     highlightOnScroll();
     updateSectionVisibility();
     
-    console.log('✅ Standard scrolling ready');
+    console.log('✅ Horizontal scrolling ready — use arrow keys or scroll horizontally');
 });
