@@ -1161,13 +1161,17 @@ document.addEventListener('DOMContentLoaded', function () {
     // Handle flip-card click and keyboard events
     const initFlipCards = () => {
         // Event delegation: attach to parent container
-        const skillsSection = document.querySelector('.skill-cards');
+        const skillsSection = document.querySelector('.skills-grid-modern');
         
-        if (!skillsSection) return;
+        if (!skillsSection) {
+            console.log('⚠️ .skills-grid-modern not found, flip-cards not initialized');
+            return;
+        }
         
         // Handle click and touch on flip-card
         skillsSection.addEventListener('click', (e) => {
             const flipCard = e.target.closest('.flip-card');
+            console.log('Click detected on:', e.target, 'flipCard found:', !!flipCard);
             if (flipCard) {
                 toggleFlipCard(flipCard);
             }
@@ -1217,9 +1221,12 @@ document.addEventListener('DOMContentLoaded', function () {
     
     // Track mouse position for radial glow effect (on both front and back)
     const initMouseTracker = () => {
-        const skillsSection = document.querySelector('.skill-cards');
+        const skillsSection = document.querySelector('.skills-grid-modern');
         
-        if (!skillsSection) return;
+        if (!skillsSection) {
+            console.log('⚠️ .skills-grid-modern not found, mouse tracker not initialized');
+            return;
+        }
         
         skillsSection.addEventListener('mousemove', (e) => {
             const rect = skillsSection.getBoundingClientRect();
