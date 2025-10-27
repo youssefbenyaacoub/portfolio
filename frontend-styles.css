@@ -2055,18 +2055,20 @@ body.light-theme .about::before {
     z-index: 1;
 }
 
-.about-content {
+.about-container {
     display: grid;
     grid-template-columns: 1.2fr 1fr;
-    gap: 3rem;
+    gap: 4rem;
     align-items: start;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
-.about-text {
+.about-left {
     position: relative;
 }
 
-.about-text h3 {
+.about-left h3 {
     font-size: 2.2rem;
     font-weight: 700;
     margin-bottom: 1.5rem;
@@ -2078,14 +2080,14 @@ body.light-theme .about::before {
     line-height: 1.3;
 }
 
-.about-text p {
+.about-left p {
     color: var(--text-secondary);
     margin-bottom: 1.5rem;
     line-height: 1.8;
     font-size: 1.05rem;
 }
 
-.about-text p strong {
+.about-left p strong {
     color: var(--text-primary);
     font-weight: 600;
     background: linear-gradient(135deg, #7c3aed 0%, #a78bfa 100%);
@@ -2138,7 +2140,6 @@ body.light-theme .about::before {
 
 .learning-path li {
     position: relative;
-    padding-left: 2rem;
     padding: 0.75rem 1rem 0.75rem 2.5rem;
     background: rgba(124, 58, 237, 0.05);
     border-radius: 0.5rem;
@@ -2161,12 +2162,13 @@ body.light-theme .about::before {
     font-size: 1.1rem;
 }
 
-.about-stats {
+.about-right {
     position: sticky;
     top: 100px;
     display: flex;
     flex-direction: column;
     gap: 2rem;
+    align-items: center;
 }
 
 .about-photo-container {
@@ -3687,12 +3689,12 @@ body.light-theme .modal-tech-grid .tech-badge {
     }
     
     /* About Section */
-    .about-content {
+    .about-container {
         grid-template-columns: 1fr;
         gap: 3rem;
     }
     
-    .about-stats {
+    .about-right {
         position: static;
     }
     
