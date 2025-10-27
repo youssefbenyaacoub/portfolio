@@ -1060,7 +1060,19 @@ document.documentElement.style.scrollBehavior = 'smooth';
 document.addEventListener('DOMContentLoaded', function() {
     console.log('✨ Lenis-style smooth scroll & immersive animations initialized');
     
-    // ===== PREMIUM SCROLL ANIMATIONS =====
+    // ===== PREMIUM SCROLL ANIMATIONS WITH FOCUS & SPOTLIGHT =====
+    
+    // Track currently focused element
+    let currentFocusedElement = null;
+    
+    // Section color palette for dynamic theming
+    const sectionColors = {
+        'home': { primary: '#3b82f6', secondary: '#06b6d4' },
+        'about': { primary: '#8b5cf6', secondary: '#7c3aed' },
+        'skills': { primary: '#06b6d4', secondary: '#3b82f6' },
+        'projects': { primary: '#f59e0b', secondary: '#ef4444' },
+        'contact': { primary: '#10b981', secondary: '#06b6d4' }
+    };
     
     // 1. Scroll progress indicator - Premium
     const updateScrollProgress = () => {
@@ -1069,28 +1081,86 @@ document.addEventListener('DOMContentLoaded', function() {
         document.documentElement.style.setProperty('--scroll-progress', progress + '%');
     };
     
-    // 2. Reveal sections and elements as they come into view
+    // 2. Update focus and spotlight effect - ONE ELEMENT AT A TIME
+    const updateFocusSpotlight = () => {
+        const elements = document.querySelectorAll('[data-aos], .scroll-item, .scroll-card');
+        let closestElement = null;
+        let closestDistance = Infinity;
+        
+        elements.forEach(element => {
+            const rect = element.getBoundingClientRect();
+            const distance = Math.abs(rect.top - window.innerHeight / 2);
+            
+            if (distance < closestDistance && rect.top < window.innerHeight && rect.bottom > 0) {
+                closestDistance = distance;
+                closestElement = element;
+            }
+        });
+        
+        // Remove focus from previous element
+        if (currentFocusedElement && currentFocusedElement !== closestElement) {
+            currentFocusedElement.classList.remove('focused');
+        }
+        
+        // Add focus to closest element
+        if (closestElement) {
+            closestElement.classList.add('focused');
+            currentFocusedElement = closestElement;
+        }
+    };
+    
+    // 3. Dynamic section color changing
+    const updateSectionColors = () => {
+        const sections = document.querySelectorAll('section');
+        
+        sections.forEach(section => {
+            const rect = section.getBoundingClientRect();
+            const sectionId = section.id;
+            const colors = sectionColors[sectionId];
+            
+            if (colors && rect.top < window.innerHeight * 0.5 && rect.bottom > 0) {
+                // Update accent colors dynamically
+                document.documentElement.style.setProperty('--section-primary', colors.primary);
+                document.documentElement.style.setProperty('--section-secondary', colors.secondary);
+                
+                // Add animated background effect
+                section.style.setProperty('--section-color-opacity', Math.max(0, 1 - rect.top / window.innerHeight));
+            }
+        });
+    };
+    
+    // 4. Reveal sections and elements ONE BY ONE with stagger
     const revealElements = () => {
-        const elements = document.querySelectorAll('[data-aos], .scroll-item, section');
+        const elements = document.querySelectorAll('[data-aos], .scroll-item, .scroll-card');
         const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
         const currentProgress = (window.scrollY / totalScroll) * 100;
         
+        let revealIndex = 0;
+        
         elements.forEach((element, index) => {
             const rect = element.getBoundingClientRect();
-            const isVisible = rect.top < window.innerHeight * 0.75 && rect.bottom > 0;
             
-            if (isVisible && !element.classList.contains('visible') && !element.classList.contains('reveal')) {
-                // Add stagger effect
-                element.style.setProperty('--scroll-index', index % 5);
+            // Element enters view at 75% of viewport
+            const shouldReveal = rect.top < window.innerHeight * 0.75 && rect.bottom > 0;
+            
+            if (shouldReveal && !element.classList.contains('visible') && !element.classList.contains('reveal')) {
+                // Stagger effect: each element reveals after previous one
+                const delayMs = revealIndex * 150; // 150ms between each reveal
                 
-                // Trigger animation
-                if (element.hasAttribute('data-aos') || element.classList.contains('scroll-item')) {
+                setTimeout(() => {
                     element.classList.add('visible', 'reveal');
-                } else if (element.tagName === 'SECTION') {
-                    element.classList.add('scroll-reveal');
-                }
+                    
+                    // Add direction-based animation
+                    if (element.classList.contains('scroll-item')) {
+                        element.style.animationName = 'slideRightReveal';
+                    } else if (element.classList.contains('scroll-card')) {
+                        element.style.animationName = 'slideDownReveal';
+                    }
+                    
+                    console.log(`✨ Revealed #${revealIndex + 1}: ${element.tagName} at ${currentProgress.toFixed(1)}%`);
+                }, delayMs);
                 
-                console.log(`✨ Revealed: ${element.tagName} at scroll position ${currentProgress.toFixed(1)}%`);
+                revealIndex++;
             }
         });
     };
@@ -1186,6 +1256,8 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!ticking) {
             window.requestAnimationFrame(() => {
                 updateScrollProgress();
+                updateFocusSpotlight();
+                updateSectionColors();
                 revealElements();
                 updateHeaderEffect();
                 updateHeroParallax();
@@ -1220,6 +1292,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     console.log('📊 Scroll animations: Progress bar ✓ Element reveal ✓ Header blur ✓ Parallax ✓ Highlights ✓');
     console.log('🎨 Lenis-style immersive interface activated');
+    console.log('🎯 Focus spotlight & dynamic colors enabled');
 });
 
 // Add some debug information in development
