@@ -1056,53 +1056,168 @@ if (document.readyState === 'loading') {
 // Using CSS scroll-behavior for native smooth scroll
 document.documentElement.style.scrollBehavior = 'smooth';
 
-// Initialize immersive scroll animations
+// Initialize immersive scroll animations - LENIS STYLE
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('✨ Smooth scroll & immersive animations initialized');
+    console.log('✨ Lenis-style smooth scroll & immersive animations initialized');
     
-    // ===== IMMERSIVE SCROLL ANIMATIONS =====
+    // ===== PREMIUM SCROLL ANIMATIONS =====
     
-    // 1. Header blur effect on scroll
-    const navbar = document.querySelector('.navbar');
-    if (navbar) {
-        window.addEventListener('scroll', function() {
-            const scrolled = window.scrollY;
-            const blurAmount = Math.min(scrolled / 300, 1);
-            navbar.style.backdropFilter = `blur(${blurAmount * 10}px)`;
-            navbar.style.background = `rgba(10, 14, 39, ${Math.min(0.95, 0.5 + blurAmount * 0.45)})`;
-        });
-    }
-
-    // 2. Fade-in elements as they come into view
-    window.addEventListener('scroll', function() {
-        document.querySelectorAll('[data-aos]').forEach(element => {
-            const rect = element.getBoundingClientRect();
-            const inView = rect.top < window.innerHeight && rect.bottom > 0;
-            
-            if (inView) {
-                const progress = 1 - (rect.top / window.innerHeight);
-                element.style.opacity = Math.min(1, Math.max(0, progress));
-            }
-        });
-    });
-
-    // 3. Parallax effect on hero (subtle)
-    const hero = document.querySelector('.hero');
-    if (hero) {
-        window.addEventListener('scroll', function() {
-            const scrolled = window.scrollY;
-            hero.style.transform = `translateY(${scrolled * 0.5}px)`;
-        });
-    }
-
-    // 4. Scroll progress indicator
-    window.addEventListener('scroll', function() {
+    // 1. Scroll progress indicator - Premium
+    const updateScrollProgress = () => {
         const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
         const progress = (window.scrollY / totalScroll) * 100;
         document.documentElement.style.setProperty('--scroll-progress', progress + '%');
+    };
+    
+    // 2. Reveal sections and elements as they come into view
+    const revealElements = () => {
+        const elements = document.querySelectorAll('[data-aos], .scroll-item, section');
+        
+        elements.forEach((element, index) => {
+            const rect = element.getBoundingClientRect();
+            const isVisible = rect.top < window.innerHeight * 0.75 && rect.bottom > 0;
+            
+            if (isVisible && !element.classList.contains('visible') && !element.classList.contains('reveal')) {
+                // Add stagger effect
+                element.style.setProperty('--scroll-index', index % 5);
+                
+                // Trigger animation
+                if (element.hasAttribute('data-aos') || element.classList.contains('scroll-item')) {
+                    element.classList.add('visible', 'reveal');
+                } else if (element.tagName === 'SECTION') {
+                    element.classList.add('scroll-reveal');
+                }
+                
+                console.log(`✨ Revealed: ${element.tagName} at scroll position ${progress.toFixed(1)}%`);
+            }
+        });
+    };
+    
+    // 3. Header blur effect on scroll - Enhanced
+    const navbar = document.querySelector('.navbar');
+    let lastScrollY = 0;
+    
+    const updateHeaderEffect = () => {
+        if (!navbar) return;
+        
+        const scrolled = window.scrollY;
+        const blurAmount = Math.min(scrolled / 300, 1);
+        const bgOpacity = Math.min(0.95, 0.5 + blurAmount * 0.45);
+        
+        navbar.style.backdropFilter = `blur(${blurAmount * 15}px)`;
+        navbar.style.background = `rgba(10, 14, 39, ${bgOpacity})`;
+        
+        // Add scrolled class for styling
+        if (scrolled > 50) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
+        
+        lastScrollY = scrolled;
+    };
+    
+    // 4. Parallax hero effect - Smooth
+    const hero = document.querySelector('.hero');
+    const updateHeroParallax = () => {
+        if (!hero) return;
+        
+        const scrolled = window.scrollY;
+        const parallaxAmount = scrolled * 0.4;
+        
+        hero.style.transform = `translateY(${parallaxAmount}px)`;
+    };
+    
+    // 5. Highlight text on scroll
+    const highlightOnScroll = () => {
+        const highlights = document.querySelectorAll('.highlight-on-scroll');
+        
+        highlights.forEach(element => {
+            const rect = element.getBoundingClientRect();
+            const isInView = rect.top < window.innerHeight * 0.7 && rect.bottom > 0;
+            
+            if (isInView) {
+                element.classList.add('highlighted');
+            } else {
+                element.classList.remove('highlighted');
+            }
+        });
+    };
+    
+    // 6. Scroll velocity indicator - LENIS FEATURE
+    let lastScrollPosition = 0;
+    let scrollVelocity = 0;
+    
+    const updateScrollVelocity = () => {
+        scrollVelocity = Math.abs(window.scrollY - lastScrollPosition);
+        lastScrollPosition = window.scrollY;
+        
+        // Increase animation intensity based on scroll velocity
+        if (scrollVelocity > 5) {
+            document.documentElement.style.setProperty('--scroll-intensity', Math.min(1, scrollVelocity / 20));
+        }
+    };
+    
+    // 7. Section visibility tracking
+    const updateSectionVisibility = () => {
+        document.querySelectorAll('section').forEach(section => {
+            const rect = section.getBoundingClientRect();
+            const percentInView = Math.min(100, Math.max(0, 
+                100 - (Math.abs(rect.top) / window.innerHeight) * 100
+            ));
+            
+            section.setAttribute('data-visibility', percentInView.toFixed(0));
+        });
+    };
+    
+    // 8. Smooth scroll callback
+    const smoothScroll = (target) => {
+        target.scrollIntoView({ behavior: 'smooth' });
+    };
+    
+    // ===== EVENT LISTENERS =====
+    
+    // Optimize scroll event with requestAnimationFrame
+    let ticking = false;
+    
+    window.addEventListener('scroll', () => {
+        if (!ticking) {
+            window.requestAnimationFrame(() => {
+                updateScrollProgress();
+                revealElements();
+                updateHeaderEffect();
+                updateHeroParallax();
+                highlightOnScroll();
+                updateScrollVelocity();
+                updateSectionVisibility();
+                
+                ticking = false;
+            });
+            ticking = true;
+        }
+    }, { passive: true });
+    
+    // Initial call
+    revealElements();
+    updateScrollProgress();
+    updateSectionVisibility();
+    
+    // Smooth scroll on hash links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', (e) => {
+            const href = anchor.getAttribute('href');
+            if (href !== '#') {
+                e.preventDefault();
+                const target = document.querySelector(href);
+                if (target) {
+                    smoothScroll(target);
+                }
+            }
+        });
     });
-
-    console.log('📊 Scroll animations: Header blur ✓ Fade-in ✓ Parallax ✓ Progress ✓');
+    
+    console.log('📊 Scroll animations: Progress bar ✓ Element reveal ✓ Header blur ✓ Parallax ✓ Highlights ✓');
+    console.log('🎨 Lenis-style immersive interface activated');
 });
 
 // Add some debug information in development
