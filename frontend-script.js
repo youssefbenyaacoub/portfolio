@@ -1052,118 +1052,208 @@ if (document.readyState === 'loading') {
     initProjectModal();
 }
 
-// ===== SMOOTH SCROLL SOLUTION (Lightweight) =====
-// Using CSS scroll-behavior for native smooth scroll
+// ===== LENIS DARKROOM ENGINEERING INSPIRED SMOOTH SCROLL =====
+// Smooth scroll with momentum and sophisticated animations
 document.documentElement.style.scrollBehavior = 'smooth';
 
-// Initialize immersive scroll animations - LENIS STYLE
+// Initialize LENIS-STYLE immersive scroll animations
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('✨ Lenis-style smooth scroll & immersive animations initialized');
+    console.log('✨ Lenis Darkroom Engineering inspired scroll initialized');
     
-    // ===== PREMIUM SCROLL ANIMATIONS WITH FOCUS & SPOTLIGHT =====
+    // ===== ADVANCED SCROLL MECHANICS =====
     
-    // Track currently focused element
-    let currentFocusedElement = null;
+    // 1. Track scroll velocity for momentum effects
+    let lastScrollY = 0;
+    let scrollVelocity = 0;
+    let rafId = null;
     
-    // Section color palette for dynamic theming
-    const sectionColors = {
-        'home': { primary: '#3b82f6', secondary: '#06b6d4' },
-        'about': { primary: '#8b5cf6', secondary: '#7c3aed' },
-        'skills': { primary: '#06b6d4', secondary: '#3b82f6' },
-        'projects': { primary: '#f59e0b', secondary: '#ef4444' },
-        'contact': { primary: '#10b981', secondary: '#06b6d4' }
+    const calculateScrollVelocity = () => {
+        scrollVelocity = Math.abs(window.scrollY - lastScrollY);
+        lastScrollY = window.scrollY;
     };
     
-    // 1. Scroll progress indicator - Premium
+    // 2. Smooth scroll progress bar with easing
     const updateScrollProgress = () => {
         const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
         const progress = (window.scrollY / totalScroll) * 100;
         document.documentElement.style.setProperty('--scroll-progress', progress + '%');
     };
     
-    // 2. Update focus and spotlight effect - ONE ELEMENT AT A TIME
-    const updateFocusSpotlight = () => {
-        const elements = document.querySelectorAll('[data-aos], .scroll-item, .scroll-card');
-        let closestElement = null;
-        let closestDistance = Infinity;
-        
-        elements.forEach(element => {
-            const rect = element.getBoundingClientRect();
-            const distance = Math.abs(rect.top - window.innerHeight / 2);
-            
-            if (distance < closestDistance && rect.top < window.innerHeight && rect.bottom > 0) {
-                closestDistance = distance;
-                closestElement = element;
-            }
-        });
-        
-        // Remove focus from previous element
-        if (currentFocusedElement && currentFocusedElement !== closestElement) {
-            currentFocusedElement.classList.remove('focused');
-        }
-        
-        // Add focus to closest element
-        if (closestElement) {
-            closestElement.classList.add('focused');
-            currentFocusedElement = closestElement;
-        }
-    };
-    
-    // 3. Dynamic section color changing
-    const updateSectionColors = () => {
+    // 3. Section-based scroll detection and theming
+    const updateSectionTheme = () => {
         const sections = document.querySelectorAll('section');
         
         sections.forEach(section => {
             const rect = section.getBoundingClientRect();
-            const sectionId = section.id;
-            const colors = sectionColors[sectionId];
+            const sectionId = section.id || 'default';
             
-            if (colors && rect.top < window.innerHeight * 0.5 && rect.bottom > 0) {
-                // Update accent colors dynamically
-                document.documentElement.style.setProperty('--section-primary', colors.primary);
-                document.documentElement.style.setProperty('--section-secondary', colors.secondary);
+            // Section is active when in viewport center
+            if (rect.top < window.innerHeight * 0.5 && rect.bottom > window.innerHeight * 0.5) {
+                // Update active section indicator
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.classList.remove('active');
+                });
                 
-                // Add animated background effect
-                section.style.setProperty('--section-color-opacity', Math.max(0, 1 - rect.top / window.innerHeight));
+                const activeLink = document.querySelector(`a[href="#${sectionId}"]`);
+                if (activeLink) {
+                    activeLink.classList.add('active');
+                }
+                
+                // Dynamic background color based on section
+                updateBackgroundForSection(sectionId);
             }
         });
     };
     
-    // 4. Reveal sections and elements ONE BY ONE with stagger
-    const revealElements = () => {
-        const elements = document.querySelectorAll('[data-aos], .scroll-item, .scroll-card');
-        const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
-        const currentProgress = (window.scrollY / totalScroll) * 100;
+    // 4. Update background based on section
+    const updateBackgroundForSection = (sectionId) => {
+        const sectionColors = {
+            'home': 'rgba(15, 23, 42, 0.8)',
+            'about': 'rgba(25, 40, 65, 0.8)',
+            'skills': 'rgba(30, 50, 80, 0.8)',
+            'projects': 'rgba(35, 45, 70, 0.8)',
+            'contact': 'rgba(20, 35, 60, 0.8)'
+        };
         
-        let revealIndex = 0;
+        const bgColor = sectionColors[sectionId] || sectionColors['home'];
+        // Smooth color transition
+        document.body.style.transition = 'background-color 0.6s ease';
+        document.body.style.backgroundColor = bgColor;
+    };
+    
+    // 5. Enhanced header blur on scroll
+    const updateHeaderBlur = () => {
+        const navbar = document.querySelector('.navbar');
+        if (!navbar) return;
         
-        elements.forEach((element, index) => {
+        const scrolled = window.scrollY;
+        const maxScroll = 300;
+        const blurAmount = Math.min(scrolled / maxScroll, 1);
+        const opacity = Math.min(0.95, 0.4 + blurAmount * 0.55);
+        
+        // Progressive blur and opacity
+        navbar.style.backdropFilter = `blur(${blurAmount * 20}px)`;
+        navbar.style.background = `rgba(15, 23, 42, ${opacity})`;
+        navbar.style.boxShadow = `0 ${blurAmount * 20}px ${blurAmount * 40}px rgba(0, 0, 0, ${blurAmount * 0.3})`;
+        
+        // Add shadow only after scroll starts
+        if (scrolled > 10) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
+    };
+    
+    // 6. Parallax effect on hero section
+    const updateParallax = () => {
+        const hero = document.querySelector('.hero');
+        if (!hero) return;
+        
+        const rect = hero.getBoundingClientRect();
+        if (rect.top < window.innerHeight) {
+            const parallax = rect.top * 0.5;
+            hero.style.transform = `translateY(${parallax}px)`;
+        }
+    };
+    
+    // 7. Text and element reveal on scroll
+    const revealElementsOnScroll = () => {
+        const revealElements = document.querySelectorAll('[data-aos], .text-reveal, .scroll-card, .scroll-item');
+        
+        revealElements.forEach((element, index) => {
             const rect = element.getBoundingClientRect();
+            const isInViewport = rect.top < window.innerHeight * 0.8 && rect.bottom > 0;
             
-            // Element enters view at 75% of viewport
-            const shouldReveal = rect.top < window.innerHeight * 0.75 && rect.bottom > 0;
-            
-            if (shouldReveal && !element.classList.contains('visible') && !element.classList.contains('reveal')) {
-                // Stagger effect: each element reveals after previous one
-                const delayMs = revealIndex * 150; // 150ms between each reveal
-                
+            if (isInViewport && !element.classList.contains('revealed')) {
+                // Staggered reveal
                 setTimeout(() => {
-                    element.classList.add('visible', 'reveal');
+                    element.classList.add('revealed');
                     
-                    // Add direction-based animation
-                    if (element.classList.contains('scroll-item')) {
-                        element.style.animationName = 'slideRightReveal';
-                    } else if (element.classList.contains('scroll-card')) {
-                        element.style.animationName = 'slideDownReveal';
+                    // Trigger animation
+                    if (element.hasAttribute('data-aos')) {
+                        element.style.opacity = '1';
+                        element.style.transform = 'translateY(0)';
+                    } else if (element.classList.contains('text-reveal')) {
+                        Array.from(element.querySelectorAll('span')).forEach(span => {
+                            span.style.animation = 'textReveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards';
+                        });
                     }
-                    
-                    console.log(`✨ Revealed #${revealIndex + 1}: ${element.tagName} at ${currentProgress.toFixed(1)}%`);
-                }, delayMs);
-                
-                revealIndex++;
+                }, index * 100);
             }
         });
     };
+    
+    // 8. Cursor parallax effect on hover
+    const updateCursorParallax = () => {
+        const cards = document.querySelectorAll('.scroll-card, .project-card, .skill-card');
+        
+        document.addEventListener('mousemove', (e) => {
+            cards.forEach(card => {
+                if (!card.matches(':hover')) return;
+                
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                
+                const rotateX = (y / rect.height) * 5;
+                const rotateY = (x / rect.width) * 5;
+                
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            });
+        });
+    };
+    
+    // 9. Scroll snap alignment for sections
+    const initScrollSnap = () => {
+        const sections = document.querySelectorAll('section');
+        sections.forEach(section => {
+            section.style.scrollSnapAlign = 'start';
+        });
+    };
+    
+    // ===== OPTIMIZED SCROLL EVENT LISTENER =====
+    let ticking = false;
+    
+    window.addEventListener('scroll', () => {
+        if (!ticking) {
+            window.requestAnimationFrame(() => {
+                calculateScrollVelocity();
+                updateScrollProgress();
+                updateSectionTheme();
+                updateHeaderBlur();
+                updateParallax();
+                revealElementsOnScroll();
+                
+                ticking = false;
+            });
+            ticking = true;
+        }
+    }, { passive: true });
+    
+    // Initialize
+    updateCursorParallax();
+    initScrollSnap();
+    revealElementsOnScroll();
+    updateScrollProgress();
+    
+    // Smooth scroll on navigation links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', (e) => {
+            const href = anchor.getAttribute('href');
+            if (href && href !== '#') {
+                e.preventDefault();
+                const target = document.querySelector(href);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }
+        });
+    });
+    
+    console.log('🎨 Lenis Darkroom design applied');
+    console.log('🚀 Smooth scroll with momentum enabled');
+    console.log('✨ Advanced animations: Text reveal, parallax, blur, themes');
+});
     
     // 3. Header blur effect on scroll - Enhanced
     const navbar = document.querySelector('.navbar');
@@ -1255,15 +1345,12 @@ document.addEventListener('DOMContentLoaded', function() {
     window.addEventListener('scroll', () => {
         if (!ticking) {
             window.requestAnimationFrame(() => {
+                calculateScrollVelocity();
                 updateScrollProgress();
-                updateFocusSpotlight();
-                updateSectionColors();
-                revealElements();
-                updateHeaderEffect();
-                updateHeroParallax();
-                highlightOnScroll();
-                updateScrollVelocity();
-                updateSectionVisibility();
+                updateSectionTheme();
+                updateHeaderBlur();
+                updateParallax();
+                revealElementsOnScroll();
                 
                 ticking = false;
             });
@@ -1272,38 +1359,24 @@ document.addEventListener('DOMContentLoaded', function() {
     }, { passive: true });
     
     // Initial call
-    revealElements();
+    revealElementsOnScroll();
     updateScrollProgress();
-    updateSectionVisibility();
     
     // Smooth scroll on hash links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', (e) => {
             const href = anchor.getAttribute('href');
-            if (href !== '#') {
+            if (href && href !== '#') {
                 e.preventDefault();
                 const target = document.querySelector(href);
                 if (target) {
-                    smoothScroll(target);
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
             }
         });
     });
     
-    console.log('📊 Scroll animations: Progress bar ✓ Element reveal ✓ Header blur ✓ Parallax ✓ Highlights ✓');
-    console.log('🎨 Lenis-style immersive interface activated');
-    console.log('🎯 Focus spotlight & dynamic colors enabled');
+    console.log('📊 Scroll animations: Progress bar ✓ Text reveal ✓ Header blur ✓ Parallax ✓ Themes ✓');
+    console.log('🎨 Lenis Darkroom design applied');
+    console.log('🎯 Advanced cursor parallax & scroll snap enabled');
 });
-
-// Add some debug information in development
-if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-    console.log('🔧 Development mode detected');
-    
-    // Log performance metrics
-    window.addEventListener('load', function() {
-        if (performance.timing) {
-            const loadTime = performance.timing.loadEventEnd - performance.timing.navigationStart;
-            console.log(`⚡ Page loaded in ${loadTime}ms`);
-        }
-    });
-}

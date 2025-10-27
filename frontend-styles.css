@@ -109,20 +109,160 @@ h1, h2, h3, h4, h5, h6, p, span, a {
     --shadow-glow: 0 0 20px rgba(37, 99, 235, 0.3);
 }
 
-/* ===== LENIS IMMERSIVE ANIMATIONS ===== */
+/* ===== LENIS DARKROOM ENGINEERING INSPIRED DESIGN ===== */
 
-/* Scroll progress bar - premium gradient */
+/* Full-screen section layout */
+section {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    padding: 4rem 2rem;
+    scroll-snap-align: start;
+}
+
+/* Hero section - full screen */
+.hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.8), rgba(30, 58, 138, 0.3));
+}
+
+.hero h1 {
+    font-size: clamp(2.5rem, 8vw, 7rem);
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.02em;
+    background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 50%, #06b6d4 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: heroTitleReveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes heroTitleReveal {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+        filter: blur(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0);
+    }
+}
+
+/* Text stagger animations - Lenis style */
+.text-reveal {
+    display: inline-block;
+    overflow: hidden;
+}
+
+.text-reveal span {
+    display: block;
+    opacity: 0;
+    transform: translateY(40px);
+    animation: textReveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.text-reveal span:nth-child(1) { animation-delay: 0.1s; }
+.text-reveal span:nth-child(2) { animation-delay: 0.2s; }
+.text-reveal span:nth-child(3) { animation-delay: 0.3s; }
+.text-reveal span:nth-child(4) { animation-delay: 0.4s; }
+.text-reveal span:nth-child(5) { animation-delay: 0.5s; }
+.text-reveal span:nth-child(6) { animation-delay: 0.6s; }
+
+@keyframes textReveal {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Section titles - Large typography */
+section > .container > h2 {
+    font-size: clamp(2rem, 6vw, 5rem);
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 2rem;
+    letter-spacing: -0.01em;
+    color: var(--text-primary);
+    animation: sectionTitleReveal 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes sectionTitleReveal {
+    from {
+        opacity: 0;
+        transform: translateY(60px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Paragraph text - Smooth reveal */
+p {
+    max-width: 800px;
+    font-size: 1.125rem;
+    line-height: 1.7;
+    opacity: 0;
+    animation: paragraphReveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.4s;
+}
+
+@keyframes paragraphReveal {
+    to {
+        opacity: 1;
+    }
+}
+
+/* ===== LENIS SCROLL PROGRESS BAR ===== */
 html::before {
     content: '';
     position: fixed;
     top: 0;
     left: 0;
     width: var(--scroll-progress);
-    height: 4px;
-    background: linear-gradient(90deg, #3b82f6 0%, #8b5cf6 50%, #06b6d4 100%);
+    height: 3px;
+    background: linear-gradient(90deg, #3b82f6, #8b5cf6, #06b6d4);
     z-index: 9999;
-    transition: width 0.15s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 0 20px rgba(37, 99, 235, 0.8);
+    transition: width 0.15s ease-out;
+    box-shadow: 0 0 15px rgba(37, 99, 235, 0.8);
+}
+
+/* Smooth scroll behavior */
+html {
+    scroll-behavior: smooth;
+    scroll-snap-type: y mandatory;
+}
+
+body {
+    scroll-padding-top: 70px;
+}
+
+/* Container centering */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+/* Grid layout for content sections */
+section .container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 4rem;
+    width: 100%;
+    max-width: 1000px;
 }
 
 /* Element reveal on scroll - fade in with slide up */
