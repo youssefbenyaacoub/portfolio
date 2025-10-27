@@ -391,6 +391,8 @@ body * {
 
 html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
+    width: 100%;
 }
 
 body {
@@ -399,6 +401,8 @@ body {
     color: var(--text-primary);
     line-height: 1.6;
     overflow-x: hidden;
+    width: 100%;
+    max-width: 100vw;
 }
 
 /* Animated Background */
@@ -2368,9 +2372,11 @@ body.light-theme .skills {
 /* Modern Skills Grid */
 .skills-grid-modern {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 2rem;
     margin-top: 3rem;
+    width: 100%;
+    overflow-x: hidden;
 }
 
 .skill-card {
@@ -2749,9 +2755,11 @@ body.light-theme .projects {
 
 .projects-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 2.5rem;
     margin-bottom: 3rem;
+    width: 100%;
+    overflow-x: hidden;
 }
 
 .project-card {
@@ -5382,12 +5390,18 @@ body.light-theme .modal-tech-grid .tech-badge {
 /* ===== Fullpage / Lenis-inspired layout ===== */
 html, body {
     height: 100%;
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden;
 }
 
 main {
     scroll-snap-type: y proximity;
     overflow-y: auto;
+    overflow-x: hidden;
     height: 100vh;
+    width: 100%;
+    max-width: 100vw;
 }
 
 .fullpage-section {
