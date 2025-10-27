@@ -1054,8 +1054,10 @@ if (document.readyState === 'loading') {
 
 // ===== LENIS SMOOTH SCROLL =====
 // Initialize Lenis for smooth scrolling
-if (typeof Lenis !== 'undefined') {
-    const lenis = new Lenis({
+if (window.Lenis !== undefined) {
+    console.log('📦 Lenis library loaded successfully');
+    
+    const lenis = new window.Lenis({
         duration: 1.2,           // Scroll duration in seconds
         easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Smooth easing
         direction: 'vertical',    // Vertical scroll
@@ -1120,7 +1122,8 @@ if (typeof Lenis !== 'undefined') {
     console.log('✨ Lenis smooth scroll enabled with immersive animations');
     console.log('📊 Scroll linking: Parallax ✓ Fade-in ✓ Header blur ✓ Progress ✓');
 } else {
-    console.warn('⚠️ Lenis library not loaded');
+    console.warn('⚠️ Lenis library not loaded - Smooth scroll disabled (fallback to native scroll)');
+    // Lenis n'est pas critique - le site fonctionne quand même
 }
 
 // Add some debug information in development

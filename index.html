@@ -40,7 +40,9 @@
     <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon.svg">
     <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon.svg">
     <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon.svg">
-    <link rel="shortcut icon" href="assets/favicon.svg">
+    <!-- Fallback: use logo.svg if favicon.svg fails -->
+    <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+    <link rel="shortcut icon" href="assets/logo.svg">
     <meta name="theme-color" content="#667eea">
     
     <!-- Canonical URL -->
@@ -782,8 +784,8 @@
 
     <!-- Scripts - Deferred for better performance -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js" defer></script>
-    <!-- Lenis - Smooth Scroll -->
-    <script src="https://cdn.jsdelivr.net/gh/darkroomengineering/lenis@latest/bundle.js" defer></script>
+    <!-- Lenis - Smooth Scroll (PRODUCTION VERSION) -->
+    <script src="https://unpkg.com/@darkroomengineering/lenis@latest/dist/lenis.min.js" defer></script>
     <script src="frontend-script.js" defer></script>
 </body>
 </html>
