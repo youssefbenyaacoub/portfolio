@@ -1153,4 +1153,90 @@ document.addEventListener('DOMContentLoaded', function () {
     updateSectionVisibility();
     
     console.log('✅ Vertical scrolling ready');
+
+    /* ==========================================
+       Flip Card Interaction Handler
+       ========================================== */
+    
+    // Handle flip-card click and keyboard events
+    const initFlipCards = () => {
+        // Event delegation: attach to parent container
+        const skillsSection = document.querySelector('.skill-cards');
+        
+        if (!skillsSection) return;
+        
+        // Handle click and touch on flip-card
+        skillsSection.addEventListener('click', (e) => {
+            const flipCard = e.target.closest('.flip-card');
+            if (flipCard) {
+                toggleFlipCard(flipCard);
+            }
+        }, false);
+        
+        // Handle keyboard (Enter/Space on focused card)
+        skillsSection.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                const flipCard = e.target.closest('.flip-card');
+                if (flipCard) {
+                    e.preventDefault();
+                    toggleFlipCard(flipCard);
+                }
+            }
+        }, false);
+        
+        // Make flip-cards keyboard accessible
+        const flipCards = document.querySelectorAll('.flip-card');
+        flipCards.forEach(card => {
+            card.setAttribute('tabindex', '0');
+            card.setAttribute('role', 'button');
+            card.setAttribute('aria-pressed', 'false');
+            
+            // Add keyboard accessible title
+            if (!card.getAttribute('aria-label')) {
+                const title = card.querySelector('.skill-card-header h3');
+                if (title) {
+                    card.setAttribute('aria-label', `${title.textContent} - Click to flip card and see what I learned`);
+                }
+            }
+        });
+        
+        console.log('✅ Flip-card interaction initialized');
+    };
+    
+    // Toggle flip state on a card
+    const toggleFlipCard = (flipCard) => {
+        flipCard.classList.toggle('is-flipped');
+        
+        // Update ARIA attributes for accessibility
+        const isFlipped = flipCard.classList.contains('is-flipped');
+        flipCard.setAttribute('aria-pressed', isFlipped ? 'true' : 'false');
+        
+        // Optional: Add visual feedback (already handled by CSS transition)
+        console.log(`Card flipped: ${isFlipped ? 'back' : 'front'}`);
+    };
+    
+    // Track mouse position for radial glow effect (on both front and back)
+    const initMouseTracker = () => {
+        const skillsSection = document.querySelector('.skill-cards');
+        
+        if (!skillsSection) return;
+        
+        skillsSection.addEventListener('mousemove', (e) => {
+            const rect = skillsSection.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            // Update CSS variables for all skill-cards in the section
+            document.querySelectorAll('.skill-card').forEach(card => {
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            });
+        }, false);
+        
+        console.log('✅ Mouse tracker for glow effect initialized');
+    };
+    
+    // Initialize flip-card functionality when DOM is ready
+    initFlipCards();
+    initMouseTracker();
 });
