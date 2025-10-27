@@ -1148,46 +1148,123 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }, { passive: true });
     
-    // Mouse wheel scroll converted to horizontal scrolling
+    // ===== CUSTOM EASING FUNCTIONS FOR SMOOTH SCROLLING =====
+    const easingFunctions = {
+        linear: (t) => t,
+        easeIn: (t) => t * t,
+        easeOut: (t) => 1 - (1 - t) * (1 - t),
+        easeInOut: (t) => t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t,
+        easeInCubic: (t) => t * t * t,
+        easeOutCubic: (t) => 1 - Math.pow(1 - t, 3),
+        easeInOutCubic: (t) => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2,
+        easeInQuart: (t) => t * t * t * t,
+        easeOutQuart: (t) => 1 - Math.pow(1 - t, 4),
+        easeInOutQuart: (t) => t < 0.5 ? 8 * t * t * t * t : 1 - Math.pow(-2 * t + 2, 4) / 2,
+        easeInQuint: (t) => t * t * t * t * t,
+        easeOutQuint: (t) => 1 - Math.pow(1 - t, 5),
+        easeInOutQuint: (t) => t < 0.5 ? 16 * t * t * t * t * t : 1 - Math.pow(-2 * t + 2, 5) / 2,
+        easeOutExpo: (t) => t === 1 ? 1 : 1 - Math.pow(2, -10 * t),
+        easeInExpo: (t) => t === 0 ? 0 : Math.pow(2, 10 * t - 10),
+        easeInOutExpo: (t) => t === 0 ? 0 : t === 1 ? 1 : t < 0.5 ? Math.pow(2, 20 * t - 10) / 2 : (2 - Math.pow(2, -20 * t + 10)) / 2,
+        easeOutElastic: (t) => {
+            const c5 = (2 * Math.PI) / 4.5;
+            return t === 0 ? 0 : t === 1 ? 1 : Math.pow(2, -10 * t) * Math.sin((t * 10 - 0.75) * c5) + 1;
+        },
+        easeOutBounce: (t) => {
+            const n1 = 7.5625, d1 = 2.75;
+            if (t < 1 / d1) return n1 * t * t;
+            if (t < 2 / d1) return n1 * (t -= 1.5 / d1) * t + 0.75;
+            if (t < 2.5 / d1) return n1 * (t -= 2.25 / d1) * t + 0.9375;
+            return n1 * (t -= 2.625 / d1) * t + 0.984375;
+        }
+    };
+    
+    // Smooth scrolling with easing
+    let isScrolling = false;
+    const smoothScroll = (targetX, duration = 800, easing = 'easeOutCubic') => {
+        if (isScrolling) return;
+        isScrolling = true;
+        
+        const startX = main.scrollLeft;
+        const distance = targetX - startX;
+        const startTime = performance.now();
+        const easeFn = easingFunctions[easing] || easingFunctions.easeOutCubic;
+        
+        const animate = (currentTime) => {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const easeProgress = easeFn(progress);
+            
+            main.scrollLeft = startX + distance * easeProgress;
+            
+            if (progress < 1) {
+                requestAnimationFrame(animate);
+            } else {
+                isScrolling = false;
+            }
+        };
+        
+        requestAnimationFrame(animate);
+    };
+    
+    // Mouse wheel scroll with easing acceleration
     main.addEventListener('wheel', (e) => {
+        if (isScrolling) {
+            e.preventDefault();
+            return;
+        }
+        
         e.preventDefault();
-        const scrollAmount = 50;
+        
+        // Calculate scroll amount based on delta magnitude (acceleration curve)
+        const deltaY = e.deltaY;
+        const deltaX = e.deltaX;
+        
+        // Use easeOut for natural deceleration feel
+        const scrollFactor = Math.min(Math.abs(deltaY) / 100, 1);
+        const easeMultiplier = easingFunctions.easeOut(scrollFactor);
+        const scrollAmount = 300 * easeMultiplier;
         
         // Detect if user is scrolling vertically or horizontally
-        if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
-            // Vertical wheel = horizontal scroll
-            main.scrollLeft += e.deltaY > 0 ? scrollAmount : -scrollAmount;
-        } else {
-            // Horizontal wheel = horizontal scroll
-            main.scrollLeft += e.deltaX > 0 ? scrollAmount : -scrollAmount;
+        if (Math.abs(deltaY) > Math.abs(deltaX)) {
+            // Vertical wheel = horizontal scroll with easing
+            const direction = deltaY > 0 ? 1 : -1;
+            smoothScroll(main.scrollLeft + direction * scrollAmount, 600, 'easeOutCubic');
+        } else if (Math.abs(deltaX) > 0) {
+            // Horizontal wheel = horizontal scroll with easing
+            const direction = deltaX > 0 ? 1 : -1;
+            smoothScroll(main.scrollLeft + direction * scrollAmount, 600, 'easeOutCubic');
         }
     }, { passive: false });
     
-    // Keyboard arrow keys for horizontal navigation
+    // Keyboard arrow keys for horizontal navigation with easing
     window.addEventListener('keydown', (e) => {
-        if (!main) return;
-        const scrollAmount = window.innerWidth * 0.8;
+        if (!main || isScrolling) return;
+        
+        const scrollDistance = window.innerWidth * 0.8;
         
         if (e.key === 'ArrowRight' || e.key === ' ') {
             e.preventDefault();
-            main.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+            smoothScroll(main.scrollLeft + scrollDistance, 700, 'easeOutQuart');
         }
         if (e.key === 'ArrowLeft') {
             e.preventDefault();
-            main.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+            smoothScroll(main.scrollLeft - scrollDistance, 700, 'easeOutQuart');
         }
     });
     
-    // Click nav links for horizontal scroll
+    // Click nav links for horizontal scroll with easing
     document.querySelectorAll('a[href^="#"]').forEach(a => {
         a.addEventListener('click', (e) => {
+            if (isScrolling) return;
+            
             const href = a.getAttribute('href');
             if (!href || href === '#') return;
             e.preventDefault();
             const target = document.querySelector(href);
             if (target && main) {
                 const scrollLeft = target.offsetLeft - window.innerWidth / 2 + target.offsetWidth / 2;
-                main.scrollTo({ left: scrollLeft, behavior: 'smooth' });
+                smoothScroll(scrollLeft, 900, 'easeInOutCubic');
             }
         });
     });

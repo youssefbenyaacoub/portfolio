@@ -96,6 +96,19 @@ h1, h2, h3, h4, h5, h6, p, span, a {
     --transition-fast: all 0.2s ease;
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     
+    /* Custom Easing Curves for Smooth Scrolling */
+    --ease-in: cubic-bezier(0.42, 0, 1, 1);
+    --ease-out: cubic-bezier(0, 0, 0.58, 1);
+    --ease-in-out: cubic-bezier(0.42, 0, 0.58, 1);
+    --ease-in-cubic: cubic-bezier(0.32, 0, 0.67, 0);
+    --ease-out-cubic: cubic-bezier(0.33, 1, 0.68, 1);
+    --ease-in-out-cubic: cubic-bezier(0.65, 0, 0.35, 1);
+    --ease-out-quart: cubic-bezier(0.165, 0.84, 0.44, 1);
+    --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+    --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+    --ease-out-elastic: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    --ease-out-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    
     /* Lenis Scroll Progress */
     --scroll-progress: 0%;
     --transition-bounce: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
@@ -5490,4 +5503,148 @@ main::-webkit-scrollbar {
 @media (max-width: 768px) {
     .fullpage-section { padding: 3rem 1rem; }
     .hero-name, .section-title { font-size: clamp(1.6rem, 7vw, 2.6rem); }
+}
+
+/* ===== CUSTOM EASING ANIMATIONS FOR HORIZONTAL SCROLL ===== */
+
+/* Linear animation - constant speed */
+@keyframes slideLinear {
+    from { transform: translateX(-100vw); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+/* Ease-in animation - slow start */
+@keyframes slideEaseIn {
+    from { transform: translateX(-100vw); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+/* Ease-out animation - fast start, slow end */
+@keyframes slideEaseOut {
+    from { transform: translateX(-100vw); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+/* Ease-in-out animation - smooth acceleration and deceleration */
+@keyframes slideEaseInOut {
+    from { transform: translateX(-100vw); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+/* Elastic animation - overshoots then settles */
+@keyframes slideElastic {
+    0% { transform: translateX(-100vw); opacity: 0; }
+    70% { transform: translateX(20px); opacity: 1; }
+    100% { transform: translateX(0); opacity: 1; }
+}
+
+/* Bounce animation - bouncy effect */
+@keyframes slideBounce {
+    0% { transform: translateX(-100vw); opacity: 0; }
+    50% { transform: translateX(30px); }
+    75% { transform: translateX(-10px); }
+    100% { transform: translateX(0); opacity: 1; }
+}
+
+/* Expo animation - very smooth exponential curve */
+@keyframes slideExpo {
+    from { transform: translateX(-100vw); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+/* Cubic animation - smooth cubic acceleration */
+@keyframes slideCubic {
+    from { transform: translateX(-100vw); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+/* Quart animation - aggressive but smooth */
+@keyframes slideQuart {
+    from { transform: translateX(-100vw); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+/* Quint animation - very aggressive smooth */
+@keyframes slideQuint {
+    from { transform: translateX(-100vw); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+/* Animation utility classes with different easing curves */
+.animate-slide-linear {
+    animation: slideLinear 0.8s linear forwards;
+}
+
+.animate-slide-ease-in {
+    animation: slideEaseIn 1s var(--ease-in) forwards;
+}
+
+.animate-slide-ease-out {
+    animation: slideEaseOut 0.8s var(--ease-out) forwards;
+}
+
+.animate-slide-ease-in-out {
+    animation: slideEaseInOut 1s var(--ease-in-out) forwards;
+}
+
+.animate-slide-elastic {
+    animation: slideElastic 1.2s var(--ease-out-elastic) forwards;
+}
+
+.animate-slide-bounce {
+    animation: slideBounce 1.3s var(--ease-out-bounce) forwards;
+}
+
+.animate-slide-expo {
+    animation: slideExpo 0.9s var(--ease-out-expo) forwards;
+}
+
+.animate-slide-cubic {
+    animation: slideCubic 1s var(--ease-out-cubic) forwards;
+}
+
+.animate-slide-quart {
+    animation: slideQuart 0.9s var(--ease-out-quart) forwards;
+}
+
+.animate-slide-quint {
+    animation: slideQuint 1s var(--ease-out-quint) forwards;
+}
+
+/* Fade-in animations with different easing curves */
+@keyframes fadeInEaseOut {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.animate-fade-ease-out {
+    animation: fadeInEaseOut 0.6s var(--ease-out) forwards;
+}
+
+.animate-fade-ease-in-out {
+    animation: fadeInEaseOut 0.8s var(--ease-in-out) forwards;
+}
+
+/* Scale animations with easing */
+@keyframes scaleInEaseOut {
+    from { 
+        opacity: 0; 
+        transform: scale(0.9);
+    }
+    to { 
+        opacity: 1; 
+        transform: scale(1);
+    }
+}
+
+.animate-scale-ease-out {
+    animation: scaleInEaseOut 0.7s var(--ease-out) forwards;
+}
+
+.animate-scale-elastic {
+    animation: scaleInEaseOut 0.9s var(--ease-out-elastic) forwards;
+}
+
+.animate-scale-bounce {
+    animation: scaleInEaseOut 1s var(--ease-out-bounce) forwards;
 }
