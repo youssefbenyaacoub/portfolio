@@ -1148,6 +1148,21 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }, { passive: true });
     
+    // Mouse wheel scroll converted to horizontal scrolling
+    main.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        const scrollAmount = 50;
+        
+        // Detect if user is scrolling vertically or horizontally
+        if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+            // Vertical wheel = horizontal scroll
+            main.scrollLeft += e.deltaY > 0 ? scrollAmount : -scrollAmount;
+        } else {
+            // Horizontal wheel = horizontal scroll
+            main.scrollLeft += e.deltaX > 0 ? scrollAmount : -scrollAmount;
+        }
+    }, { passive: false });
+    
     // Keyboard arrow keys for horizontal navigation
     window.addEventListener('keydown', (e) => {
         if (!main) return;

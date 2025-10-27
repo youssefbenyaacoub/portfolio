@@ -13,6 +13,13 @@ section {
     visibility: visible;
 }
 
+/* Allow horizontal scrolling on all devices */
+html, body {
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+}
+
 /* Fix any potential padding/margin issues */
 .hero-content,
 .hero-visual,
@@ -5419,10 +5426,17 @@ main {
     scrollbar-width: none;
     display: flex;
     flex-direction: row;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
 }
 
 main::-webkit-scrollbar {
     display: none;
+}
+
+/* Enable smooth scrolling */
+* {
+    scroll-behavior: smooth;
 }
 
 .fullpage-section {
