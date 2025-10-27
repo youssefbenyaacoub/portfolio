@@ -100,6 +100,7 @@ h1, h2, h3, h4, h5, h6, p, span, a {
     /* Dynamic section colors */
     --section-primary: #3b82f6;
     --section-secondary: #06b6d4;
+    --section-bg: radial-gradient(circle at 20% 20%, rgba(59,130,246,0.06), transparent 25%), radial-gradient(circle at 80% 80%, rgba(6,182,212,0.04), transparent 30%);
     
     /* Shadows */
     --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
@@ -5239,4 +5240,64 @@ body.light-theme .modal-tech-grid .tech-badge {
     section {
         page-break-inside: avoid;
     }
+}
+
+/* ===== Fullpage / Lenis-inspired layout ===== */
+html, body {
+    height: 100%;
+}
+
+main {
+    scroll-snap-type: y mandatory;
+    overflow-y: auto;
+    height: 100vh;
+}
+
+.fullpage-section {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    scroll-snap-align: start;
+    padding: 6rem 2rem;
+    position: relative;
+    transition: background 0.6s ease, color 0.6s ease;
+}
+
+.fullpage-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--section-bg);
+    opacity: 0.8;
+    z-index: -1;
+    transition: opacity 0.6s ease;
+}
+
+/* Large typography for hero and section titles */
+.hero-name, .section-title {
+    font-size: clamp(2rem, 6vw, 4rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+}
+
+/* Focused element styling */
+.focused {
+    transform: translateZ(0) scale(1.02);
+    transition: transform 0.45s cubic-bezier(0.16,1,0.3,1), box-shadow 0.45s;
+}
+
+/* Make scroll-cards centered and prominent */
+.projects-grid, .skills-grid-modern {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    width: 100%;
+    align-items: start;
+}
+
+/* Less crowded mobile spacing */
+@media (max-width: 768px) {
+    .fullpage-section { padding: 3rem 1rem; }
+    .hero-name, .section-title { font-size: clamp(1.6rem, 7vw, 2.6rem); }
 }
