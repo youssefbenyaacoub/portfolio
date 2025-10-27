@@ -211,9 +211,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Theme toggle
     initThemeToggle();
     
-    // Typing animation
-    initTypingAnimation();
-    
     // Stats counter animation
     initStatsCounter();
     
@@ -299,59 +296,6 @@ function initNavigation() {
             }
         });
     });
-}
-
-// Typing Animation
-function initTypingAnimation() {
-    const typingElement = document.querySelector('.typing-text');
-    if (!typingElement) return;
-
-    // Initialize with current language texts
-    if (!window.currentTypingTexts) {
-        updateTypingTexts(currentLang);
-    }
-    
-    let textIndex = 0;
-    let charIndex = 0;
-    let isDeleting = false;
-    let typeSpeed = 100;
-
-    function typeText() {
-        const texts = window.currentTypingTexts || [
-            'Business Information Systems Student',
-            'Web Developer (PHP · JS)',
-            'Data & Analytics Enthusiast',
-            'Financial Officer @ Joker ESEN'
-        ];
-        
-        const currentText = texts[textIndex];
-        
-        if (isDeleting) {
-            typingElement.textContent = currentText.substring(0, charIndex - 1);
-            charIndex--;
-            typeSpeed = 50;
-        } else {
-            typingElement.textContent = currentText.substring(0, charIndex + 1);
-            charIndex++;
-            typeSpeed = 100;
-        }
-
-        if (!isDeleting && charIndex === currentText.length) {
-            setTimeout(() => {
-                isDeleting = true;
-                typeSpeed = 50;
-            }, 2000);
-        } else if (isDeleting && charIndex === 0) {
-            isDeleting = false;
-            textIndex = (textIndex + 1) % texts.length;
-            typeSpeed = 500;
-        }
-
-        setTimeout(typeText, typeSpeed);
-    }
-
-    // Start the typing animation
-    setTimeout(typeText, 1000);
 }
 
 // Stats Counter Animation
@@ -803,9 +747,6 @@ function applyLanguage(lang) {
         }
     });
     
-    // Update typing animation texts
-    updateTypingTexts(lang);
-    
     // Apply RTL for Arabic
     if (lang === 'ar') {
         document.body.setAttribute('dir', 'rtl');
@@ -823,26 +764,6 @@ function applyLanguage(lang) {
 
 function getNestedTranslation(obj, path) {
     return path.split('.').reduce((current, key) => current?.[key], obj);
-}
-
-function updateTypingTexts(lang) {
-    const typingTexts = {
-        en: [
-            'Business Information Systems Student',
-            'Web Developer (PHP · JS)',
-            'Data & Analytics Enthusiast',
-            'Financial Officer @ Joker ESEN'
-        ],
-        fr: [
-            "Étudiant en Systèmes d'Information",
-            'Développeur Web (PHP · JS)',
-            'Passionné de Données & Analytics',
-            'Responsable Financier @ Joker ESEN'
-        ]
-    };
-    
-    // Store texts for typing animation
-    window.currentTypingTexts = typingTexts[lang];
 }
 
 // Theme Toggle

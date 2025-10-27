@@ -1562,21 +1562,6 @@ body.light-theme .stat-card:hover {
     line-height: 1.3;
 }
 
-.typing-text {
-    position: relative;
-}
-
-.cursor {
-    color: var(--primary-color);
-    /* animation: blink 1s infinite; */
-    opacity: 1; /* Keep cursor visible */
-}
-
-/* @keyframes blink {
-    0%, 50% { opacity: 1; }
-    51%, 100% { opacity: 0; }
-} */
-
 .hero-description {
     font-size: clamp(0.95rem, 2vw, 1.1rem);
     color: var(--text-secondary);
