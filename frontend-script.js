@@ -1177,7 +1177,7 @@ document.addEventListener('DOMContentLoaded', function () {
             
             // Add keyboard accessible title
             if (!flipCard.getAttribute('aria-label')) {
-                const title = flipCard.querySelector('.skill-card-header h3');
+                const title = flipCard.querySelector('.front-content h3') || flipCard.querySelector('.skill-card-header h3');
                 if (title) {
                     flipCard.setAttribute('aria-label', `${title.textContent} - Click to flip card and see what I learned`);
                 }
