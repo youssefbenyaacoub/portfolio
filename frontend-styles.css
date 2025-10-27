@@ -121,7 +121,6 @@ section {
     position: relative;
     overflow: hidden;
     padding: 4rem 2rem;
-    scroll-snap-align: start;
 }
 
 /* Hero section - full screen */
@@ -243,7 +242,9 @@ html::before {
 /* Smooth scroll behavior */
 html {
     scroll-behavior: smooth;
-    scroll-snap-type: y proximity;
+    overflow-x: hidden;
+    width: 100%;
+    overflow-y: hidden;
 }
 
 body {
@@ -5404,7 +5405,6 @@ body::-webkit-scrollbar {
 }
 
 main {
-    scroll-snap-type: y proximity;
     overflow-y: scroll;
     overflow-x: hidden;
     height: 100vh;
@@ -5424,7 +5424,6 @@ main::-webkit-scrollbar {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    scroll-snap-align: start;
     padding: 4rem 2rem;
     position: relative;
     transition: background 0.6s ease, color 0.6s ease;

@@ -1052,175 +1052,15 @@ if (document.readyState === 'loading') {
     initProjectModal();
 }
 
-// ===== LENIS-LIKE FULLPAGE SCROLL MANAGER =====
-// Replace complex external dependencies with a controlled fullpage experience:
-document.documentElement.style.scrollBehavior = 'auto'; // we'll control transitions
+// ===== LENIS CODE REMOVED - STANDARD SCROLL RESTORED =====
+// Removed fullpage scroll manager - using native browser scrolling instead
 
-// Helper functions (outside DOMContentLoaded for reusability)
-function updateBackgroundForSection(sectionId) {
-    const sectionColors = {
-        'home': 'rgba(15, 23, 42, 0.95)',
-        'about': 'rgba(20, 35, 60, 0.95)',
-        'skills': 'rgba(25, 40, 70, 0.95)',
-        'projects': 'rgba(30, 50, 80, 0.95)',
-        'contact': 'rgba(35, 55, 90, 0.95)'
-    };
-    
-    const bgColor = sectionColors[sectionId] || sectionColors['home'];
-    document.body.style.transition = 'background-color 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
-    document.body.style.backgroundColor = bgColor;
-}
-
-function updateHeaderBlur() {
-    const navbar = document.querySelector('.navbar');
-    if (!navbar) return;
-    
-    const scrolled = window.scrollY;
-    const maxScroll = 300;
-    const blurAmount = Math.min(scrolled / maxScroll, 1);
-    const opacity = Math.min(0.95, 0.4 + blurAmount * 0.55);
-    
-    navbar.style.backdropFilter = `blur(${blurAmount * 20}px)`;
-    navbar.style.background = `rgba(15, 23, 42, ${opacity})`;
-    navbar.style.boxShadow = `0 ${blurAmount * 20}px ${blurAmount * 40}px rgba(0, 0, 0, ${blurAmount * 0.3})`;
-    
-    if (scrolled > 10) {
-        navbar.classList.add('scrolled');
-    } else {
-        navbar.classList.remove('scrolled');
-    }
-}
-
-function updateScrollProgress() {
-    const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
-    const progress = (window.scrollY / totalScroll) * 100;
-    document.documentElement.style.setProperty('--scroll-progress', progress + '%');
-}
-
+// Native scroll event listeners for enhancements only
 document.addEventListener('DOMContentLoaded', function () {
-    console.log('✨ Fullpage scroll manager initialized');
+    console.log('✨ Standard scrolling initialized');
 
-    const sections = Array.from(document.querySelectorAll('.fullpage-section'));
-    if (!sections.length) return;
-
-    let isAnimating = false;
-    const ANIM_DELAY = 700; // ms to lock between scrolls
-
-    // Helpers
-    function getClosestSectionIndex() {
-        const centerY = window.innerHeight / 2;
-        let closest = 0;
-        let minDist = Infinity;
-        sections.forEach((s, i) => {
-            const rect = s.getBoundingClientRect();
-            const dist = Math.abs(rect.top + rect.height / 2 - centerY);
-            if (dist < minDist) { minDist = dist; closest = i; }
-        });
-        return closest;
-    }
-
-    function setActiveSection(index) {
-        sections.forEach((s, i) => {
-            s.classList.toggle('active-section', i === index);
-            if (i === index) s.classList.add('focused'); else s.classList.remove('focused');
-        });
-
-        // update nav active link
-        const id = sections[index].id;
-        document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
-        const link = document.querySelector(`a[href="#${id}"]`);
-        if (link) link.classList.add('active');
-
-        // theme variables
-        updateBackgroundForSection(id);
-
-        // reveal elements inside the focused section
-        const elems = sections[index].querySelectorAll('[data-aos], .scroll-item, .scroll-card');
-        elems.forEach((el, i) => {
-            setTimeout(() => el.classList.add('visible', 'reveal'), i * 120);
-        });
-    }
-
-    function goToSection(index) {
-        if (isAnimating) return;
-        index = Math.max(0, Math.min(sections.length - 1, index));
-        const target = sections[index];
-        if (!target) return;
-        isAnimating = true;
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        setActiveSection(index);
-        setTimeout(() => { isAnimating = false; }, ANIM_DELAY);
-    }
-
-    // Wheel handler (desktop) - one section per scroll
-    let wheelDebounce = 0;
-    window.addEventListener('wheel', (e) => {
-        if (wheelDebounce > Date.now()) return;
-        const delta = e.deltaY;
-        if (Math.abs(delta) < 10) return;
-        const dir = delta > 0 ? 1 : -1;
-        const current = getClosestSectionIndex();
-        const next = current + dir;
-        if (next >= 0 && next < sections.length) {
-            e.preventDefault();
-            goToSection(next);
-            wheelDebounce = Date.now() + ANIM_DELAY;
-        }
-    }, { passive: false });
-
-    // Touch support (mobile swipes)
-    let touchStartY = 0;
-    window.addEventListener('touchstart', (e) => { touchStartY = e.touches[0].clientY; }, { passive: true });
-    window.addEventListener('touchend', (e) => {
-        const diff = touchStartY - (e.changedTouches[0].clientY || 0);
-        if (Math.abs(diff) < 40) return;
-        const dir = diff > 0 ? 1 : -1;
-        const current = getClosestSectionIndex();
-        const next = current + dir;
-        if (next >= 0 && next < sections.length) goToSection(next);
-    }, { passive: true });
-
-    // Keyboard navigation
-    window.addEventListener('keydown', (e) => {
-        if (['ArrowDown', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); goToSection(getClosestSectionIndex() + 1); }
-        if (['ArrowUp', 'PageUp'].includes(e.key)) { e.preventDefault(); goToSection(getClosestSectionIndex() - 1); }
-    });
-
-    // Click nav links -> smooth section jump
-    document.querySelectorAll('a[href^="#"]').forEach(a => {
-        a.addEventListener('click', (e) => {
-            const href = a.getAttribute('href');
-            if (!href || href === '#') return;
-            e.preventDefault();
-            const target = document.querySelector(href);
-            const idx = sections.indexOf(target);
-            if (idx >= 0) goToSection(idx);
-        });
-    });
-
-    // Update on manual scroll (for browser refresh or keyboard)
-    let scrollTick = null;
-    window.addEventListener('scroll', () => {
-        if (scrollTick) cancelAnimationFrame(scrollTick);
-        scrollTick = requestAnimationFrame(() => {
-            const idx = getClosestSectionIndex();
-            setActiveSection(idx);
-            updateScrollProgress();
-            updateHeaderBlur();
-        });
-    }, { passive: true });
-
-    // Initial setup
-    sections.forEach(s => { s.classList.remove('visible', 'reveal'); });
-    const startIndex = getClosestSectionIndex();
-    setTimeout(() => goToSection(startIndex), 50);
-
-    console.log('✅ Fullpage manager ready — use wheel, swipe or arrows to navigate');
-});
-    
-    // 3. Header blur effect on scroll - Enhanced
+    // Header blur effect on scroll
     const navbar = document.querySelector('.navbar');
-    let lastScrollY = 0;
     
     const updateHeaderEffect = () => {
         if (!navbar) return;
@@ -1232,17 +1072,14 @@ document.addEventListener('DOMContentLoaded', function () {
         navbar.style.backdropFilter = `blur(${blurAmount * 15}px)`;
         navbar.style.background = `rgba(10, 14, 39, ${bgOpacity})`;
         
-        // Add scrolled class for styling
         if (scrolled > 50) {
             navbar.classList.add('scrolled');
         } else {
             navbar.classList.remove('scrolled');
         }
-        
-        lastScrollY = scrolled;
     };
     
-    // 4. Parallax hero effect - Smooth
+    // Parallax hero effect
     const hero = document.querySelector('.hero');
     const updateHeroParallax = () => {
         if (!hero) return;
@@ -1253,7 +1090,7 @@ document.addEventListener('DOMContentLoaded', function () {
         hero.style.transform = `translateY(${parallaxAmount}px)`;
     };
     
-    // 5. Highlight text on scroll
+    // Highlight text on scroll
     const highlightOnScroll = () => {
         const highlights = document.querySelectorAll('.highlight-on-scroll');
         
@@ -1269,21 +1106,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     };
     
-    // 6. Scroll velocity indicator - LENIS FEATURE
-    let lastScrollPosition = 0;
-    let scrollVelocity = 0;
-    
-    const updateScrollVelocity = () => {
-        scrollVelocity = Math.abs(window.scrollY - lastScrollPosition);
-        lastScrollPosition = window.scrollY;
-        
-        // Increase animation intensity based on scroll velocity
-        if (scrollVelocity > 5) {
-            document.documentElement.style.setProperty('--scroll-intensity', Math.min(1, scrollVelocity / 20));
-        }
-    };
-    
-    // 7. Section visibility tracking
+    // Section visibility tracking
     const updateSectionVisibility = () => {
         document.querySelectorAll('section').forEach(section => {
             const rect = section.getBoundingClientRect();
@@ -1295,9 +1118,26 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     };
     
-    // 8. Smooth scroll callback
-    const smoothScroll = (target) => {
-        target.scrollIntoView({ behavior: 'smooth' });
+    // Scroll progress tracker
+    const updateScrollProgress = () => {
+        const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = (window.scrollY / totalScroll) * 100;
+        document.documentElement.style.setProperty('--scroll-progress', progress + '%');
     };
     
-    // (Old scroll listener block removed — fullpage manager handles scroll)
+    // Main scroll listener
+    window.addEventListener('scroll', () => {
+        updateHeaderEffect();
+        updateHeroParallax();
+        highlightOnScroll();
+        updateSectionVisibility();
+        updateScrollProgress();
+    }, { passive: true });
+    
+    // Initial call
+    updateHeaderEffect();
+    highlightOnScroll();
+    updateSectionVisibility();
+    
+    console.log('✅ Standard scrolling ready');
+});
