@@ -1052,6 +1052,33 @@ if (document.readyState === 'loading') {
     initProjectModal();
 }
 
+// ===== LENIS SMOOTH SCROLL =====
+// Initialize Lenis for smooth scrolling
+if (typeof Lenis !== 'undefined') {
+    const lenis = new Lenis({
+        duration: 1.2,           // Scroll duration in seconds
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Smooth easing
+        direction: 'vertical',    // Vertical scroll
+        gestureDirection: 'vertical',
+        smooth: true,
+        smoothTouch: false,
+        touchMultiplier: 2,      // Touch scroll multiplier
+        wheelMultiplier: 1,      // Wheel scroll multiplier
+        autoRaf: true            // Auto request animation frame
+    });
+
+    // RAF loop for Lenis
+    function raf(time) {
+        lenis.raf(time);
+        requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
+    console.log('✨ Lenis smooth scroll enabled');
+} else {
+    console.warn('⚠️ Lenis library not loaded');
+}
+
 // Add some debug information in development
 if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
     console.log('🔧 Development mode detected');
