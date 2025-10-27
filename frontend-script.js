@@ -1160,51 +1160,48 @@ document.addEventListener('DOMContentLoaded', function () {
     
     // Handle flip-card click and keyboard events
     const initFlipCards = () => {
-        // Event delegation: attach to parent container
-        const skillsSection = document.querySelector('.skills-grid-modern');
+        // Get all flip cards directly
+        const flipCards = document.querySelectorAll('.flip-card');
         
-        if (!skillsSection) {
-            console.log('⚠️ .skills-grid-modern not found, flip-cards not initialized');
+        if (flipCards.length === 0) {
+            console.log('⚠️ No .flip-card elements found');
             return;
         }
         
-        // Handle click and touch on flip-card
-        skillsSection.addEventListener('click', (e) => {
-            const flipCard = e.target.closest('.flip-card');
-            console.log('Click detected on:', e.target, 'flipCard found:', !!flipCard);
-            if (flipCard) {
-                toggleFlipCard(flipCard);
-            }
-        }, false);
-        
-        // Handle keyboard (Enter/Space on focused card)
-        skillsSection.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-                const flipCard = e.target.closest('.flip-card');
-                if (flipCard) {
-                    e.preventDefault();
-                    toggleFlipCard(flipCard);
-                }
-            }
-        }, false);
-        
-        // Make flip-cards keyboard accessible
-        const flipCards = document.querySelectorAll('.flip-card');
-        flipCards.forEach(card => {
-            card.setAttribute('tabindex', '0');
-            card.setAttribute('role', 'button');
-            card.setAttribute('aria-pressed', 'false');
+        // Attach click handler to each flip card
+        flipCards.forEach(flipCard => {
+            // Make it keyboard accessible
+            flipCard.setAttribute('tabindex', '0');
+            flipCard.setAttribute('role', 'button');
+            flipCard.setAttribute('aria-pressed', 'false');
             
             // Add keyboard accessible title
-            if (!card.getAttribute('aria-label')) {
-                const title = card.querySelector('.skill-card-header h3');
+            if (!flipCard.getAttribute('aria-label')) {
+                const title = flipCard.querySelector('.skill-card-header h3');
                 if (title) {
-                    card.setAttribute('aria-label', `${title.textContent} - Click to flip card and see what I learned`);
+                    flipCard.setAttribute('aria-label', `${title.textContent} - Click to flip card and see what I learned`);
                 }
             }
+            
+            // Handle click on the card
+            flipCard.addEventListener('click', (e) => {
+                e.stopPropagation();
+                toggleFlipCard(flipCard);
+                console.log('🎯 Flip card clicked');
+            });
+            
+            // Handle keyboard (Enter/Space on focused card)
+            flipCard.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    toggleFlipCard(flipCard);
+                    console.log('⌨️ Flip card activated via keyboard');
+                }
+            });
         });
         
-        console.log('✅ Flip-card interaction initialized');
+        console.log(`✅ Flip-card interaction initialized for ${flipCards.length} cards`);
     };
     
     // Toggle flip state on a card
