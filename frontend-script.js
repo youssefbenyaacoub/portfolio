@@ -1056,6 +1056,47 @@ if (document.readyState === 'loading') {
 // Replace complex external dependencies with a controlled fullpage experience:
 document.documentElement.style.scrollBehavior = 'auto'; // we'll control transitions
 
+// Helper functions (outside DOMContentLoaded for reusability)
+function updateBackgroundForSection(sectionId) {
+    const sectionColors = {
+        'home': 'rgba(15, 23, 42, 0.95)',
+        'about': 'rgba(20, 35, 60, 0.95)',
+        'skills': 'rgba(25, 40, 70, 0.95)',
+        'projects': 'rgba(30, 50, 80, 0.95)',
+        'contact': 'rgba(35, 55, 90, 0.95)'
+    };
+    
+    const bgColor = sectionColors[sectionId] || sectionColors['home'];
+    document.body.style.transition = 'background-color 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
+    document.body.style.backgroundColor = bgColor;
+}
+
+function updateHeaderBlur() {
+    const navbar = document.querySelector('.navbar');
+    if (!navbar) return;
+    
+    const scrolled = window.scrollY;
+    const maxScroll = 300;
+    const blurAmount = Math.min(scrolled / maxScroll, 1);
+    const opacity = Math.min(0.95, 0.4 + blurAmount * 0.55);
+    
+    navbar.style.backdropFilter = `blur(${blurAmount * 20}px)`;
+    navbar.style.background = `rgba(15, 23, 42, ${opacity})`;
+    navbar.style.boxShadow = `0 ${blurAmount * 20}px ${blurAmount * 40}px rgba(0, 0, 0, ${blurAmount * 0.3})`;
+    
+    if (scrolled > 10) {
+        navbar.classList.add('scrolled');
+    } else {
+        navbar.classList.remove('scrolled');
+    }
+}
+
+function updateScrollProgress() {
+    const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = (window.scrollY / totalScroll) * 100;
+    document.documentElement.style.setProperty('--scroll-progress', progress + '%');
+}
+
 document.addEventListener('DOMContentLoaded', function () {
     console.log('✨ Fullpage scroll manager initialized');
 
