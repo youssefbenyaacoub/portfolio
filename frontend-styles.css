@@ -1092,55 +1092,6 @@ body.light-theme .hero-content {
     display: none;
 }
 
-.status-badge {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.6rem;
-    background: rgba(16, 185, 129, 0.12);
-    border: 2px solid rgba(16, 185, 129, 0.35);
-    padding: 0.6rem 1.2rem;
-    border-radius: 999px;
-    margin: 0 auto 0.8rem auto;
-    font-size: 0.85rem;
-    color: rgb(16, 185, 129);
-    font-weight: 700;
-    animation: pulse 2s ease infinite;
-    letter-spacing: 0.3px;
-    width: fit-content;
-}
-
-body.light-theme .status-badge {
-    background: rgba(16, 185, 129, 0.18);
-    border: 2px solid rgba(16, 185, 129, 0.45);
-    color: rgb(5, 150, 105);
-}
-
-.status-dot {
-    width: 8px;
-    height: 8px;
-    background: rgb(16, 185, 129);
-    border-radius: 50%;
-    animation: statusDotPulse 2s ease infinite;
-    will-change: transform, opacity;
-    flex-shrink: 0;
-}
-
-body.light-theme .status-dot {
-    background: rgb(5, 150, 105);
-}
-
-@keyframes statusDotPulse {
-    0%, 100% { 
-        opacity: 1;
-        transform: scale(1);
-    }
-    50% { 
-        opacity: 0.5;
-        transform: scale(1.1);
-    }
-}
-
 
 /* Hero Background Shapes */
 .hero-background {
