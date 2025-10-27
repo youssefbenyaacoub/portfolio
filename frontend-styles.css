@@ -393,6 +393,7 @@ html {
     scroll-behavior: smooth;
     overflow-x: hidden;
     width: 100%;
+    overflow-y: hidden;
 }
 
 body {
@@ -401,6 +402,7 @@ body {
     color: var(--text-primary);
     line-height: 1.6;
     overflow-x: hidden;
+    overflow-y: hidden;
     width: 100%;
     max-width: 100vw;
 }
@@ -5393,15 +5395,26 @@ html, body {
     width: 100%;
     max-width: 100vw;
     overflow-x: hidden;
+    scrollbar-width: none;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+    display: none;
 }
 
 main {
     scroll-snap-type: y proximity;
-    overflow-y: auto;
+    overflow-y: scroll;
     overflow-x: hidden;
     height: 100vh;
     width: 100%;
     max-width: 100vw;
+    scrollbar-width: none;
+}
+
+main::-webkit-scrollbar {
+    display: none;
 }
 
 .fullpage-section {
