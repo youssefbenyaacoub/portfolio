@@ -2398,6 +2398,11 @@ body.light-theme .skill-card {
     border: 1px solid rgba(124, 58, 237, 0.1);
 }
 
+/* Override scroll-card padding for skill cards */
+.skill-card.scroll-card {
+    padding: 0 !important;
+}
+
 .skill-card::before {
     content: '';
     position: absolute;
@@ -2546,7 +2551,7 @@ body.light-theme .skill-card.learning {
     cursor: pointer;
     width: 100%;
     height: 100%;
-    position: relative;
+    display: block;
 }
 
 .flip-card-inner {
@@ -2579,6 +2584,7 @@ body.light-theme .skill-card.learning {
     box-sizing: border-box;
     border-radius: 1.5rem;
     justify-content: flex-start;
+    overflow-y: auto;
 }
 
 .card-front {
@@ -2592,9 +2598,7 @@ body.light-theme .skill-card.learning {
     background: rgba(15, 23, 42, 0.6);
     backdrop-filter: blur(10px);
     border: 1px solid rgba(124, 58, 237, 0.15);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-    justify-content: center;
-    align-items: center;
+    box-shadow: inset 0 0 20px rgba(124, 58, 237, 0.05);
 }
 
 body.light-theme .card-back {
@@ -3927,7 +3931,7 @@ body.light-theme .modal-tech-grid .tech-badge {
     }
     
     .skill-card {
-        padding: 0 !important;
+        padding: 1.75rem;
     }
     
     /* Projects Section */
@@ -4305,7 +4309,7 @@ body.light-theme .modal-tech-grid .tech-badge {
     }
     
     .skill-card {
-        padding: 0 !important;
+        padding: 1.75rem 1.5rem;
     }
     
     .skill-card-icon {
