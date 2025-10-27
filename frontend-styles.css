@@ -2549,8 +2549,6 @@ body.light-theme .skill-card.learning {
     cursor: pointer;
     width: 100%;
     height: 100%;
-    display: block;
-    position: relative;
 }
 
 .flip-card-inner {
@@ -2580,8 +2578,6 @@ body.light-theme .skill-card.learning {
     padding: 2.2rem;
     box-sizing: border-box;
     justify-content: flex-start;
-    overflow-y: auto;
-    max-height: 100%;
 }
 
 .card-front {
