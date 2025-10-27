@@ -784,30 +784,6 @@
 
     <!-- Scripts - Deferred for better performance -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js" defer></script>
-    <!-- Lenis - Smooth Scroll (via ES Module) -->
-    <script type="module">
-        import Lenis from 'https://cdn.jsdelivr.net/npm/@studio-freight/lenis@latest';
-        
-        window.LenisInstance = new Lenis({
-            duration: 1.2,
-            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-            direction: 'vertical',
-            gestureDirection: 'vertical',
-            smooth: true,
-            smoothTouch: false,
-            touchMultiplier: 2,
-            wheelMultiplier: 1,
-            autoRaf: true
-        });
-
-        function raf(time) {
-            window.LenisInstance.raf(time);
-            requestAnimationFrame(raf);
-        }
-        requestAnimationFrame(raf);
-
-        window.LenisReady = true;
-    </script>
     <script src="frontend-script.js" defer></script>
 </body>
 </html>

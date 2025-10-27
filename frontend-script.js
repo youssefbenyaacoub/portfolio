@@ -1052,61 +1052,57 @@ if (document.readyState === 'loading') {
     initProjectModal();
 }
 
-// ===== LENIS SMOOTH SCROLL =====
-// Initialize Lenis for smooth scrolling
+// ===== SMOOTH SCROLL SOLUTION (Lightweight) =====
+// Using CSS scroll-behavior for native smooth scroll
+document.documentElement.style.scrollBehavior = 'smooth';
+
+// Initialize immersive scroll animations
 document.addEventListener('DOMContentLoaded', function() {
-    // Wait for Lenis to be ready
-    if (window.LenisReady && window.LenisInstance) {
-        const lenis = window.LenisInstance;
-        console.log('✨ Lenis smooth scroll enabled');
-        
-        // ===== IMMERSIVE SCROLL ANIMATIONS =====
-        
-        // 1. Parallax effect on hero
-        lenis.on('scroll', (scroll) => {
-            const hero = document.querySelector('.hero');
-            if (hero) {
-                const parallaxStrength = 0.3;
-                hero.style.transform = `translateY(${scroll.velocity * parallaxStrength}px)`;
-            }
+    console.log('✨ Smooth scroll & immersive animations initialized');
+    
+    // ===== IMMERSIVE SCROLL ANIMATIONS =====
+    
+    // 1. Header blur effect on scroll
+    const navbar = document.querySelector('.navbar');
+    if (navbar) {
+        window.addEventListener('scroll', function() {
+            const scrolled = window.scrollY;
+            const blurAmount = Math.min(scrolled / 300, 1);
+            navbar.style.backdropFilter = `blur(${blurAmount * 10}px)`;
+            navbar.style.background = `rgba(10, 14, 39, ${Math.min(0.95, 0.5 + blurAmount * 0.45)})`;
         });
-
-        // 2. Fade-in elements as they come into view
-        lenis.on('scroll', (scroll) => {
-            document.querySelectorAll('[data-aos]').forEach(element => {
-                const rect = element.getBoundingClientRect();
-                const inView = rect.top < window.innerHeight && rect.bottom > 0;
-                
-                if (inView) {
-                    const progress = 1 - (rect.top / window.innerHeight);
-                    element.style.opacity = Math.min(1, Math.max(0, progress));
-                }
-            });
-        });
-
-        // 3. Header blur effect on scroll
-        lenis.on('scroll', (scroll) => {
-            const navbar = document.querySelector('.navbar');
-            if (navbar) {
-                const blurAmount = Math.min(scroll / 300, 1);
-                navbar.style.backdropFilter = `blur(${blurAmount * 10}px)`;
-                navbar.style.background = `rgba(10, 14, 39, ${Math.min(0.95, blurAmount * 0.5)})`;
-            }
-        });
-
-        // 4. Scroll progress indicator
-        lenis.on('scroll', (scroll) => {
-            const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
-            const progress = (scroll / totalScroll) * 100;
-            document.documentElement.style.setProperty('--scroll-progress', progress + '%');
-        });
-
-        console.log('📊 Scroll linking: Parallax ✓ Fade-in ✓ Header blur ✓ Progress ✓');
-    } else {
-        console.warn('⚠️ Lenis not ready - Using native scroll (will retry in 500ms)');
-        // Retry in 500ms
-        setTimeout(arguments.callee, 500);
     }
+
+    // 2. Fade-in elements as they come into view
+    window.addEventListener('scroll', function() {
+        document.querySelectorAll('[data-aos]').forEach(element => {
+            const rect = element.getBoundingClientRect();
+            const inView = rect.top < window.innerHeight && rect.bottom > 0;
+            
+            if (inView) {
+                const progress = 1 - (rect.top / window.innerHeight);
+                element.style.opacity = Math.min(1, Math.max(0, progress));
+            }
+        });
+    });
+
+    // 3. Parallax effect on hero (subtle)
+    const hero = document.querySelector('.hero');
+    if (hero) {
+        window.addEventListener('scroll', function() {
+            const scrolled = window.scrollY;
+            hero.style.transform = `translateY(${scrolled * 0.5}px)`;
+        });
+    }
+
+    // 4. Scroll progress indicator
+    window.addEventListener('scroll', function() {
+        const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = (window.scrollY / totalScroll) * 100;
+        document.documentElement.style.setProperty('--scroll-progress', progress + '%');
+    });
+
+    console.log('📊 Scroll animations: Header blur ✓ Fade-in ✓ Parallax ✓ Progress ✓');
 });
 
 // Add some debug information in development
