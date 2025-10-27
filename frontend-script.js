@@ -1074,7 +1074,51 @@ if (typeof Lenis !== 'undefined') {
     }
     requestAnimationFrame(raf);
 
-    console.log('✨ Lenis smooth scroll enabled');
+    // ===== IMMERSIVE SCROLL ANIMATIONS =====
+    
+    // 1. Parallax effect on hero
+    lenis.on('scroll', (scroll) => {
+        const hero = document.querySelector('.hero');
+        if (hero) {
+            const parallaxStrength = 0.3;
+            hero.style.transform = `translateY(${scroll.velocity * parallaxStrength}px)`;
+        }
+    });
+
+    // 2. Fade-in elements as they come into view
+    lenis.on('scroll', (scroll) => {
+        document.querySelectorAll('[data-aos]').forEach(element => {
+            const rect = element.getBoundingClientRect();
+            const inView = rect.top < window.innerHeight && rect.bottom > 0;
+            
+            if (inView) {
+                const progress = 1 - (rect.top / window.innerHeight);
+                element.style.opacity = Math.min(1, Math.max(0, progress));
+            }
+        });
+    });
+
+    // 3. Header blur effect on scroll
+    lenis.on('scroll', (scroll) => {
+        const navbar = document.querySelector('.navbar');
+        if (navbar) {
+            const blurAmount = Math.min(scroll / 300, 1);
+            navbar.style.backdropFilter = `blur(${blurAmount * 10}px)`;
+            navbar.style.background = `rgba(10, 14, 39, ${Math.min(0.95, blurAmount * 0.5)})`;
+        }
+    });
+
+    // 4. Scroll progress indicator
+    lenis.on('scroll', (scroll) => {
+        const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = (scroll / totalScroll) * 100;
+        
+        // You can use this for a progress bar
+        document.documentElement.style.setProperty('--scroll-progress', progress + '%');
+    });
+
+    console.log('✨ Lenis smooth scroll enabled with immersive animations');
+    console.log('📊 Scroll linking: Parallax ✓ Fade-in ✓ Header blur ✓ Progress ✓');
 } else {
     console.warn('⚠️ Lenis library not loaded');
 }

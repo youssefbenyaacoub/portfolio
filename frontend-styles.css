@@ -88,6 +88,9 @@ h1, h2, h3, h4, h5, h6, p, span, a {
     /* Transitions */
     --transition-fast: all 0.2s ease;
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    /* Lenis Scroll Progress */
+    --scroll-progress: 0%;
     --transition-bounce: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
     
     /* Shadows */
@@ -96,6 +99,32 @@ h1, h2, h3, h4, h5, h6, p, span, a {
     --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
     --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
     --shadow-glow: 0 0 20px rgba(37, 99, 235, 0.3);
+}
+
+/* ===== LENIS IMMERSIVE ANIMATIONS ===== */
+
+/* Scroll progress bar */
+html::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: var(--scroll-progress);
+    height: 3px;
+    background: linear-gradient(90deg, #3b82f6, #8b5cf6, #06b6d4);
+    z-index: 9999;
+    transition: width 0.1s ease-out;
+}
+
+/* Smooth scroll container */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Enhance parallax elements */
+[data-parallax] {
+    will-change: transform;
+    transform: translateZ(0);
 }
 
 /* Light Theme */
