@@ -1065,7 +1065,8 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
     }, { passive: true });
-    
+});
+
 // ===== VERTICAL SCROLLING INITIALIZED =====
 // Portfolio uses standard vertical scrolling (top-to-bottom)
 
