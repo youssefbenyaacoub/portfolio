@@ -2580,7 +2580,14 @@ body.light-theme .skill-card.learning {
     box-sizing: border-box;
     justify-content: flex-start;
     overflow-y: auto;
+    overflow-x: hidden;
     border-radius: 1.5rem;
+    scrollbar-width: none;
+}
+
+.card-front::-webkit-scrollbar,
+.card-back::-webkit-scrollbar {
+    display: none;
 }
 
 .card-front {
@@ -2598,6 +2605,7 @@ body.light-theme .skill-card.learning {
     height: 100%;
     gap: 1rem;
     text-align: center;
+    min-height: 100%;
 }
 
 .front-content h3 {
@@ -2632,6 +2640,13 @@ body.light-theme .skill-card.learning {
     height: 100%;
     justify-content: flex-start;
     overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none;
+    padding-right: 0.5rem;
+}
+
+.back-content::-webkit-scrollbar {
+    display: none;
 }
 
 .back-content h4 {
