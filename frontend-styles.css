@@ -2370,8 +2370,8 @@ body.light-theme .skills {
 /* Modern Skills Grid */
 .skills-grid-modern {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+    gap: 2.5rem;
     margin-top: 3rem;
     width: 100%;
     overflow-x: hidden;
@@ -2388,7 +2388,7 @@ body.light-theme .skills {
     overflow: hidden;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
     display: block;
-    min-height: 300px;
+    min-height: 420px;
 }
 
 body.light-theme .skill-card {
@@ -2507,7 +2507,7 @@ body.light-theme .skill-card.learning {
 .skill-tags {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
+    gap: 0.7rem;
     position: relative;
     z-index: 1;
 }
@@ -2516,12 +2516,12 @@ body.light-theme .skill-card.learning {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 0.4rem;
+    gap: 0.5rem;
     background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(6, 182, 212, 0.05));
     border: 1px solid rgba(124, 58, 237, 0.2);
-    padding: 0.4rem 0.8rem;
+    padding: 0.5rem 1rem;
     border-radius: 6px;
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     font-weight: 500;
     color: var(--text-secondary);
     transition: all 0.25s ease;
@@ -2539,7 +2539,7 @@ body.light-theme .skill-card.learning {
 }
 
 .skill-tag i {
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     color: rgba(124, 58, 237, 0.8);
 }
 
@@ -2575,8 +2575,8 @@ body.light-theme .skill-card.learning {
     -webkit-backface-visibility: hidden;
     display: flex;
     flex-direction: column;
-    gap: 0.8rem;
-    padding: 1.5rem 1.2rem;
+    gap: 1.2rem;
+    padding: 2rem 1.8rem;
     box-sizing: border-box;
     justify-content: flex-start;
     overflow-y: auto;
@@ -2593,12 +2593,12 @@ body.light-theme .skill-card.learning {
     align-items: center;
     justify-content: center;
     height: 100%;
-    gap: 0.8rem;
+    gap: 1rem;
     text-align: center;
 }
 
 .front-content h3 {
-    font-size: 1.4rem;
+    font-size: 1.6rem;
     font-weight: 700;
     color: var(--text-primary);
     margin: 0;
@@ -2606,22 +2606,22 @@ body.light-theme .skill-card.learning {
 }
 
 .front-content .skill-card-icon {
-    width: 60px;
-    height: 60px;
-    font-size: 2rem;
+    width: 70px;
+    height: 70px;
+    font-size: 2.2rem;
 }
 
 .back-content {
     display: flex;
     flex-direction: column;
-    gap: 0.7rem;
+    gap: 1rem;
     height: 100%;
     justify-content: flex-start;
     overflow-y: auto;
 }
 
 .back-content h4 {
-    font-size: 0.95rem;
+    font-size: 1rem;
     font-weight: 700;
     color: var(--text-primary);
     margin: 0;
@@ -2632,10 +2632,10 @@ body.light-theme .skill-card.learning {
 }
 
 .back-content h5 {
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     font-weight: 600;
     color: var(--text-secondary);
-    margin: 0.3rem 0 0 0;
+    margin: 0.4rem 0 0 0;
 }
 
 .card-back {
@@ -2678,15 +2678,15 @@ body.light-theme .card-back {
     margin: 0;
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.6rem;
 }
 
 .learned-list li {
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     color: var(--text-secondary);
-    padding-left: 1.2rem;
+    padding-left: 1.3rem;
     position: relative;
-    line-height: 1.4;
+    line-height: 1.5;
 }
 
 .learned-list li::before {
@@ -2695,7 +2695,7 @@ body.light-theme .card-back {
     left: 0;
     color: #10b981;
     font-weight: bold;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
 }
 
 /* Responsive flip-card on mobile */
